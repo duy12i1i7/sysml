@@ -28,6 +28,21 @@
 \usepackage{xcolor}
 \usepackage{orcidlink}
 
+\newcommand{\imageplaceholder}[3]{%
+\begin{figure}[H]
+  \centering
+  \fbox{%
+    \begin{minipage}[c][0.22\textheight][c]{0.88\columnwidth}
+      \centering
+      \textbf{Image placeholder}\\[0.6em]
+      \footnotesize #2
+    \end{minipage}%
+  }
+  \caption{#3}
+  \label{#1}
+\end{figure}
+}
+
 \begin{document}
 \history{Manuscript prepared on May 25, 2026.}
 \doi{}
@@ -285,9 +300,13 @@ The case study evaluates whether the SysML requirements can be carried through t
     \draw[arrow] (a) -- (r1);
     \draw[arrow] (s) -- (r2);
   \end{tikzpicture}
-  \caption{Implemented two-TurtleBot4 attacker/supporter target-acquisition scenario}
+  \caption{Implemented two-TurtleBot4 leader/follower target-acquisition scenario}
   \label{fig_two_tb4_case}
 \end{figure}
+
+\imageplaceholder{fig_experiment_setup_photo}
+{Replace this box with \texttt{figs/experiment\_setup.png}. Use either a Gazebo/RViz screenshot or a lab photo that clearly shows \texttt{/robot1}, \texttt{/robot2}, the shared target location, and the two-robot validation setup.}
+{Experimental setup for the two-TurtleBot4 target-acquisition validation case.}
 
 \subsection{Role Assignment Logic}
 Let $p_T$ be the target position, $p_1$ be the latest odometry position for \texttt{/robot1}, and $p_2$ be the latest odometry position for \texttt{/robot2}. Each robot is eligible only if its odometry age $\Delta t_i$ is below the freshness threshold $\tau_{\max}$. The implemented validation case uses a fixed leader--follower assignment:
@@ -340,6 +359,10 @@ Two simulation modes are provided. The stable mode uses lightweight differential
 
 The physical mode does not launch Gazebo and does not command TurtleBot4 motion by default. It starts the coordinator and metrics nodes against the canonical \texttt{/robot1} and \texttt{/robot2} interfaces. The lab baseline for each TurtleBot4 Lite is FastDDS with \texttt{ROS\_DOMAIN\_ID=0}, Simple Discovery, and no user namespace; in that single-robot form, the robot exposes root topics such as \texttt{/odom}, \texttt{/scan}, \texttt{/oakd/rgb/preview/image\_raw}, and \texttt{/cmd\_vel\_unstamped}. Two physical robots cannot both remain unnamespaced in the same ROS graph without topic collisions, so the deployment must either configure unique namespaces or provide an explicit bridge/remap layer before running the two-robot coordinator. Direct velocity following can be enabled only by setting an explicit launch argument during controlled lab testing, and the physical command topic is \texttt{/robot*/cmd\_vel\_unstamped}. An optional Nav2-based real-robot demonstration can be launched on a saved map, but target selection is limited to safe reachable cells in the map; this optional mode is not used as the quantitative result in this paper. This separation is intentional: the paper validates the model-to-code chain in simulation while preserving a conservative path for physical experiments.
 
+\imageplaceholder{fig_rviz_safe_goal_map}
+{Replace this box with \texttt{figs/rviz\_safe\_goal\_map.png}. Use an RViz screenshot of the saved map with the safe-goal overlay enabled. The image should show free cells, unsafe/obstacle regions, and examples of target points that are acceptable for the optional physical Nav2 demonstration.}
+{RViz map view used to distinguish safe reachable targets from unsafe goal locations in the optional physical Nav2 demonstration.}
+
 \subsection{Simulation Result}
 A stable simulation campaign was executed with the two TurtleBot4 namespaces and the leader/follower target-acquisition mission. Five target locations were repeated three times, for a total of 15 trials. The targets were $(0.9,0.0)$, $(1.5,0.0)$, $(1.2,0.6)$, $(1.2,-0.6)$, and $(1.8,0.2)$ m in the map frame. The aggregate summary is shown in Table \ref{tab_results}. The result validates the executable chain for target publication, odometry ingestion, role assignment, goal publication, robot motion, task completion, and metric logging.
 
@@ -363,6 +386,10 @@ Requirement refs & REQ-001--REQ-006 \\
 \end{tabular}
 \end{table}
 
+\imageplaceholder{fig_sim_trial_metrics}
+{Replace this box with \texttt{figs/sim\_trial\_metrics.png}. Plot the 15 simulation trials from \texttt{metrics/paper\_sim\_trials/aggregate\_20260528\_173405.csv}. Recommended panels: completion time per trial, \texttt{/robot1} and \texttt{/robot2} path length, and minimum separation.}
+{Simulation metrics over 15 repeated target-acquisition trials.}
+
 \subsection{Physical Deployment Check}
 The physical TurtleBot4 run was treated as a deployment validation rather than a navigation-performance experiment. The check verified whether the real robots exposed the canonical ROS 2 graph required by the model before any physical motion was claimed. The logged run confirmed that the odometry streams and command endpoints were discoverable and publishing for both robots, while the lidar scan topics were visible but did not publish \texttt{LaserScan} messages within the 20 s validation window. The result is summarized in Table \ref{tab_real_check}.
 
@@ -383,6 +410,10 @@ Physical navigation result & not claimed \\
 \hline
 \end{tabular}
 \end{table}
+
+\imageplaceholder{fig_real_deployment_check}
+{Replace this box with \texttt{figs/real\_deployment\_check.png}. Use either a terminal screenshot of \texttt{./scripts/tb4 paper-real-check} or an \texttt{rqt\_graph} screenshot showing the canonical \texttt{/robot1} and \texttt{/robot2} odometry, command, and scan interfaces. The image should make clear that physical navigation is not claimed in this paper.}
+{Physical deployment check for the canonical two-TurtleBot4 ROS 2 interfaces.}
 
 This deployment check is useful for the paper because it identifies the remaining physical integration boundary without overstating the experimental result. The quantitative evidence in this paper therefore remains the repeated simulation campaign, while the real-robot result documents the current state of the sim-to-real interface and the next hardware issue to resolve.
 
