@@ -394,23 +394,26 @@ A stable simulation campaign was executed with the two TurtleBot4 namespaces and
 {Simulation metrics over 15 repeated target-acquisition trials.}
 
 \subsection{Physical Deployment Check}
-The physical TurtleBot4 run was treated as a deployment validation rather than a navigation-performance experiment. The check verified whether the real robots exposed the canonical ROS 2 graph required by the model before any physical motion was claimed. Two logged checks were retained: a short 8 s message-window check and a stricter 20 s message-window check. Both used FastDDS with \texttt{ROS\_DOMAIN\_ID=0} and no configured FastDDS profile. The evidence files are \texttt{check\_20260528\_173828.txt} and \texttt{check\_20260528\_173913.txt}. Both checks confirmed that the odometry streams and command endpoints were discoverable and publishing for both robots, while the lidar scan topics were visible but did not publish \texttt{LaserScan} messages within the validation window. The detailed deployment result is summarized in Table \ref{tab_real_check}.
+The physical TurtleBot4 run was treated as a deployment-readiness check before collecting navigation-performance data. The logged readiness checks used FastDDS with \texttt{ROS\_DOMAIN\_ID=0} and confirmed that the odometry streams and command endpoints were discoverable and publishing for both robots, while the lidar scan topics were visible but did not publish \texttt{LaserScan} messages within the validation window. Because this readiness state is not yet a physical navigation result, Table \ref{tab_real_check} is intentionally formatted as the real-robot result template that will be filled after the same metric set is collected on the physical map.
 
 \begin{table*}[!t]
-\caption{Detailed physical TurtleBot4 deployment-validation results}
+\caption{Physical TurtleBot4 navigation-trial result template}
 \label{tab_real_check}
 \centering
 {\scriptsize
 \setlength{\tabcolsep}{2pt}
 \renewcommand{\arraystretch}{1.08}
-\begin{tabular}{@{}p{0.10\textwidth}p{0.06\textwidth}p{0.20\textwidth}p{0.22\textwidth}p{0.16\textwidth}p{0.22\textwidth}@{}}
+\begin{tabular}{@{}p{0.12\textwidth}p{0.075\textwidth}p{0.045\textwidth}p{0.055\textwidth}p{0.115\textwidth}p{0.18\textwidth}p{0.145\textwidth}p{0.19\textwidth}@{}}
 \hline
-\textbf{Run} & \textbf{Window} & \textbf{Topic discovery} & \textbf{Message availability} & \textbf{Motion interface} & \textbf{Paper decision} \\
+\textbf{Target case} & \textbf{Target (m)} & \textbf{Trials} & \textbf{Success} & \textbf{Completion time (s)} & \textbf{Path length (m)} & \textbf{Safety / spacing (m)} & \textbf{Coordination evidence} \\
 \hline
-\textbf{A} \newline \texttt{173828} & 8 s & 4/4 canonical odom/scan topics visible for \texttt{/robot1} and \texttt{/robot2} & odometry messages 2/2 OK; \texttt{LaserScan} messages 0/2 within window & command endpoints 2/2 visible on \texttt{cmd\_vel\_unstamped} & exit code 2; graph incomplete because scan topics were visible but silent \\
-\textbf{B} \newline \texttt{173913} & 20 s & 4/4 canonical odom/scan topics visible for \texttt{/robot1} and \texttt{/robot2} & odometry messages 2/2 OK; \texttt{LaserScan} messages 0/2 within window & command endpoints 2/2 visible on \texttt{cmd\_vel\_unstamped} & exit code 2; scan stream blocker remained under stricter timeout \\
+\texttt{real\_t01} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD & role switches TBD; log TBD \\
+\texttt{real\_t02} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD & role switches TBD; log TBD \\
+\texttt{real\_t03} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD & role switches TBD; log TBD \\
+\texttt{real\_t04} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD & role switches TBD; log TBD \\
+\texttt{real\_t05} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD & role switches TBD; log TBD \\
 \hline
-\textbf{Req. impact} & -- & REQ-004 observable interfaces partially satisfied & odometry evidence available; lidar evidence not available & REQ-006 command endpoint identified but not used for performance scoring & physical navigation not claimed; next step is lidar/service remediation \\
+\textbf{All targets} & TBD & TBD & TBD & mean TBD; median TBD; range TBD & R1 TBD; R2 TBD; team TBD; R2/R1 TBD & global min TBD; mean TBD; contact events TBD & REQ-001--REQ-006 evidence TBD \\
 \hline
 \end{tabular}
 }
@@ -420,7 +423,7 @@ The physical TurtleBot4 run was treated as a deployment validation rather than a
 {Replace this box with \texttt{figs/real\_deployment\_check.png}. Use either a terminal screenshot of \texttt{./scripts/tb4 paper-real-check} or an \texttt{rqt\_graph} screenshot showing the canonical \texttt{/robot1} and \texttt{/robot2} odometry, command, and scan interfaces. The image should make clear that physical navigation is not claimed in this paper.}
 {Physical deployment check for the canonical two-TurtleBot4 ROS 2 interfaces.}
 
-This deployment check is useful for the paper because it identifies the remaining physical integration boundary without overstating the experimental result. The quantitative evidence in this paper therefore remains the repeated simulation campaign, while the real-robot result documents the current state of the sim-to-real interface and the next hardware issue to resolve.
+This deployment check is useful because it identifies the remaining physical integration boundary without overstating the experimental result. Until the physical navigation trials in Table \ref{tab_real_check} are completed, the quantitative evidence in this paper remains the repeated simulation campaign, while the real-robot section records the metric structure that will be used for the final hardware runs.
 
 \subsection{Discussion}
 The result supports the paper's central claim: the same mission boundary defined in SysML is executable in ROS 2 and produces measurable validation evidence. The 100\% success rate over 15 trials shows that the selected two-robot mission can be reproduced across multiple target positions in the stable simulation mode. The zero role-switch count is expected because the implemented validation case uses fixed leader and follower identities for repeatability. The minimum separation remained positive, and both robot path lengths were recorded, confirming that the metrics logger observed the team-level behavior required by REQ-004.
