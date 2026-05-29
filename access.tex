@@ -373,17 +373,17 @@ A stable simulation campaign was executed with the two TurtleBot4 namespaces and
 {\scriptsize
 \setlength{\tabcolsep}{2pt}
 \renewcommand{\arraystretch}{1.08}
-\begin{tabular}{@{}p{0.11\textwidth}p{0.075\textwidth}p{0.045\textwidth}p{0.055\textwidth}p{0.115\textwidth}p{0.18\textwidth}p{0.145\textwidth}p{0.19\textwidth}@{}}
+\begin{tabular}{@{}p{0.13\textwidth}p{0.09\textwidth}p{0.055\textwidth}p{0.07\textwidth}p{0.14\textwidth}p{0.25\textwidth}p{0.20\textwidth}@{}}
 \hline
-\textbf{Target case} & \textbf{Target (m)} & \textbf{Trials} & \textbf{Success} & \textbf{Completion time (s)} & \textbf{Path length (m)} & \textbf{Safety / spacing (m)} & \textbf{Coordination evidence} \\
+\textbf{Target case} & \textbf{Target (m)} & \textbf{Trials} & \textbf{Success} & \textbf{Completion time (s)} & \textbf{Path length (m)} & \textbf{Safety / spacing (m)} \\
 \hline
-\texttt{sim\_t01} & (0.90, 0.00) & 3 & 3/3 & $5.503 \pm 0.001$ & R1 0.773; R2 0.477; team 1.250 & min 1.000; mean 1.000 & fixed leader/follower; 0 role switches \\
-\texttt{sim\_t02} & (1.50, 0.00) & 3 & 3/3 & $7.504 \pm 0.001$ & R1 1.334; R2 0.882; team 2.216 & min 1.000; mean 1.000 & fixed leader/follower; 0 role switches \\
-\texttt{sim\_t03} & (1.20, 0.60) & 3 & 3/3 & $7.504 \pm 0.002$ & R1 1.213; R2 0.813; team 2.026 & min 0.765; mean 0.766 & fixed leader/follower; 0 role switches \\
-\texttt{sim\_t04} & (1.20, -0.60) & 3 & 3/3 & $7.503 \pm 0.001$ & R1 1.205; R2 0.896; team 2.100 & min 1.000; mean 1.000 & fixed leader/follower; 0 role switches \\
-\texttt{sim\_t05} & (1.80, 0.20) & 3 & 3/3 & $9.005 \pm 0.002$ & R1 1.664; R2 1.222; team 2.886 & min 0.978; mean 0.979 & fixed leader/follower; 0 role switches \\
+\texttt{sim\_t01} & (0.90, 0.00) & 3 & 3/3 & $5.503 \pm 0.001$ & R1 0.773; R2 0.477; team 1.250 & min 1.000; mean 1.000 \\
+\texttt{sim\_t02} & (1.50, 0.00) & 3 & 3/3 & $7.504 \pm 0.001$ & R1 1.334; R2 0.882; team 2.216 & min 1.000; mean 1.000 \\
+\texttt{sim\_t03} & (1.20, 0.60) & 3 & 3/3 & $7.504 \pm 0.002$ & R1 1.213; R2 0.813; team 2.026 & min 0.765; mean 0.766 \\
+\texttt{sim\_t04} & (1.20, -0.60) & 3 & 3/3 & $7.503 \pm 0.001$ & R1 1.205; R2 0.896; team 2.100 & min 1.000; mean 1.000 \\
+\texttt{sim\_t05} & (1.80, 0.20) & 3 & 3/3 & $9.005 \pm 0.002$ & R1 1.664; R2 1.222; team 2.886 & min 0.978; mean 0.979 \\
 \hline
-\textbf{All targets} & 5 cases & 15 & 15/15 (100\%) & mean $7.404 \pm 1.153$; median 7.503; range 5.502--9.006 & R1 $1.238 \pm 0.296$; R2 $0.858 \pm 0.246$; team $2.096 \pm 0.540$; R2/R1 $0.685 \pm 0.050$ & global min 0.765; mean $0.949 \pm 0.095$; no observed contact & 0 total role switches; 15 summary CSV files and 15 timeline CSV files; REQ-001--REQ-006 traced \\
+\textbf{All targets} & 5 cases & 15 & 15/15 (100\%) & mean $7.404 \pm 1.153$; median 7.503; range 5.502--9.006 & R1 $1.238 \pm 0.296$; R2 $0.858 \pm 0.246$; team $2.096 \pm 0.540$; R2/R1 $0.685 \pm 0.050$ & global min 0.765; mean $0.949 \pm 0.095$; no observed contact \\
 \hline
 \end{tabular}
 }
@@ -403,17 +403,17 @@ The physical TurtleBot4 run was treated as a deployment-readiness check before c
 {\scriptsize
 \setlength{\tabcolsep}{2pt}
 \renewcommand{\arraystretch}{1.08}
-\begin{tabular}{@{}p{0.12\textwidth}p{0.075\textwidth}p{0.045\textwidth}p{0.055\textwidth}p{0.115\textwidth}p{0.18\textwidth}p{0.145\textwidth}p{0.19\textwidth}@{}}
+\begin{tabular}{@{}p{0.13\textwidth}p{0.09\textwidth}p{0.055\textwidth}p{0.07\textwidth}p{0.14\textwidth}p{0.25\textwidth}p{0.20\textwidth}@{}}
 \hline
-\textbf{Target case} & \textbf{Target (m)} & \textbf{Trials} & \textbf{Success} & \textbf{Completion time (s)} & \textbf{Path length (m)} & \textbf{Safety / spacing (m)} & \textbf{Coordination evidence} \\
+\textbf{Target case} & \textbf{Target (m)} & \textbf{Trials} & \textbf{Success} & \textbf{Completion time (s)} & \textbf{Path length (m)} & \textbf{Safety / spacing (m)} \\
 \hline
-\texttt{real\_t01} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD & role switches TBD; log TBD \\
-\texttt{real\_t02} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD & role switches TBD; log TBD \\
-\texttt{real\_t03} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD & role switches TBD; log TBD \\
-\texttt{real\_t04} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD & role switches TBD; log TBD \\
-\texttt{real\_t05} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD & role switches TBD; log TBD \\
+\texttt{real\_t01} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
+\texttt{real\_t02} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
+\texttt{real\_t03} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
+\texttt{real\_t04} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
+\texttt{real\_t05} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
 \hline
-\textbf{All targets} & TBD & TBD & TBD & mean TBD; median TBD; range TBD & R1 TBD; R2 TBD; team TBD; R2/R1 TBD & global min TBD; mean TBD; contact events TBD & REQ-001--REQ-006 evidence TBD \\
+\textbf{All targets} & TBD & TBD & TBD & mean TBD; median TBD; range TBD & R1 TBD; R2 TBD; team TBD; R2/R1 TBD & global min TBD; mean TBD; contact events TBD \\
 \hline
 \end{tabular}
 }
