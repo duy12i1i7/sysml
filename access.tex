@@ -333,23 +333,23 @@ The runtime sequence follows the activity model in Section III and is limited to
     \item Metrics are written to CSV files for validation and regression checks.
 \end{enumerate}
 
-\subsection{Traceability to ROS 2 Code}
-The SysML requirements are implemented in the \texttt{paper\_tb4\_swarm} ROS 2 package. Table \ref{tab_traceability} summarizes the traceability link from each requirement to the executable artifact used in the case study.
+\subsection{Paper Requirement Set}
+The SysML requirement model defines the scope of the two-robot case study. Table \ref{tab_traceability} summarizes the paper-level requirements used to constrain the simulation and physical validation.
 
 \begin{table}[H]
-\caption{Traceability between paper requirements and implementation}
+\caption{Paper requirement descriptions}
 \label{tab_traceability}
 \centering
-\begin{tabular}{p{0.18\columnwidth}p{0.36\columnwidth}p{0.34\columnwidth}}
+\begin{tabular}{p{0.18\columnwidth}p{0.72\columnwidth}}
 \hline
-\textbf{Req.} & \textbf{Design intent} & \textbf{Implementation} \\
+\textbf{Req.} & \textbf{Description} \\
 \hline
-REQ-001 & Two robots cooperate on one target task & \texttt{mbse\_model.py}, \texttt{coordinator.py} \\
-REQ-002 & \texttt{/robot1} acts as leader/attacker & \texttt{leader\_namespace: robot1}, \texttt{/robot1/assigned\_role} \\
-REQ-003 & \texttt{/robot2} tracks a dynamic follower pose & follower-goal generation in \texttt{coordinator.py}, \texttt{/robot2/goal\_pose} \\
-REQ-004 & Roles, goals, states, events are observable & \texttt{/robot*/assigned\_role}, \texttt{/robot*/goal\_pose}, \texttt{/swarm/*} \\
-REQ-005 & Simulation before hardware & \texttt{stable\_two\_tb4.launch.py}, CSV metrics \\
-REQ-006 & Physical DDS setup and motion require explicit enablement & \texttt{real\_two\_tb4.launch.py}, \texttt{ROS\_DOMAIN\_ID}, \texttt{/cmd\_vel\_unstamped} \\
+REQ-001 & Two TurtleBot4 robots shall cooperate on one shared target-acquisition task. \\
+REQ-002 & \texttt{/robot1} shall act as the leader/attacker robot during the validation case. \\
+REQ-003 & \texttt{/robot2} shall maintain a follower role by tracking a pose derived from the leader and target geometry. \\
+REQ-004 & Robot roles, goals, states, events, and validation metrics shall be observable for experiment analysis. \\
+REQ-005 & The two-robot mission shall be evaluated in simulation before physical deployment. \\
+REQ-006 & Physical execution shall require explicit DDS configuration and explicit motion enablement before velocity commands are sent to the robots. \\
 \hline
 \end{tabular}
 \end{table}
