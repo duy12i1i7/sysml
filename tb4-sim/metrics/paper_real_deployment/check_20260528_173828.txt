@@ -1,0 +1,35 @@
+Paper real deployment validation
+timestamp=20260528_173828
+command=./scripts/tb4 check-real --motion --messages
+
+Checking canonical two-TurtleBot4 graph...
+  RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+  ROS_DOMAIN_ID=0
+  FASTRTPS_DEFAULT_PROFILES_FILE=<unset>
+[WARN] [1779964708.965282019] [rcl]: ROS_LOCALHOST_ONLY is deprecated but still honored if it is enabled. Use ROS_AUTOMATIC_DISCOVERY_RANGE and ROS_STATIC_PEERS instead.
+[WARN] [1779964708.965288496] [rcl]: 'localhost_only' is disabled, 'automatic_discovery_range' and 'static_peers' will be used.
+OK: /robot1/odom
+OK: /robot2/odom
+OK: /robot1/scan
+OK: /robot2/scan
+[WARN] [1779964717.374487714] [rcl]: ROS_LOCALHOST_ONLY is deprecated but still honored if it is enabled. Use ROS_AUTOMATIC_DISCOVERY_RANGE and ROS_STATIC_PEERS instead.
+[WARN] [1779964717.374493344] [rcl]: 'localhost_only' is disabled, 'automatic_discovery_range' and 'static_peers' will be used.
+NO DATA: /robot1/scan did not publish LaserScan within 8s
+NO DATA: /robot2/scan did not publish LaserScan within 8s
+OK: /robot1/odom is publishing Odometry
+OK: /robot2/odom is publishing Odometry
+OK: /robot1/cmd_vel_unstamped
+OK: /robot2/cmd_vel_unstamped
+[ros2run]: Process exited with failure 2
+The two-robot graph is incomplete. Bring the missing robot online and rerun check-real.
+
+If a robot has /robot*/scan but no /robot*/odom, its Raspberry Pi/lidar side is
+visible but the Create3/base odometry side is not ready. On that physical robot,
+confirm the namespace in turtlebot4-setup and restart the TurtleBot4 service:
+
+  sudo systemctl restart turtlebot4.service
+
+Then restart the ROS 2 daemon on this laptop and rerun the strict check:
+
+  ros2 daemon stop; ros2 daemon start
+  ./scripts/tb4 check-real --motion --messages

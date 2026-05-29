@@ -1,0 +1,442 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <world name="two_tb4_stable">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+
+    <physics name="stable_step" type="ignored">
+      <max_step_size>0.005</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.8 0.85 0.9 1</background>
+      <shadows>false</shadows>
+    </scene>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>10 10</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>10 10</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.78 0.78 0.76 1</ambient>
+            <diffuse>0.78 0.78 0.76 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="target_marker">
+      <static>true</static>
+      <pose>1.5 0 0.02 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.12</radius>
+              <length>0.04</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>1.0 0.1 0.1 1</ambient>
+            <diffuse>1.0 0.1 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="robot1">
+      <pose>0 0 0.08 0 0 0</pose>
+      <link name="base_link">
+        <inertial>
+          <mass>2.5</mass>
+          <inertia>
+            <ixx>0.04</ixx>
+            <iyy>0.04</iyy>
+            <izz>0.06</izz>
+          </inertia>
+        </inertial>
+        <collision name="base_collision">
+          <geometry>
+            <box>
+              <size>0.34 0.28 0.12</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="create3_body_visual">
+          <pose>0 0 0.0392 0 0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/irobot_create_description/meshes/body_visual.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="create3_bumper_visual">
+          <pose>0 0 0.0392 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/irobot_create_description/meshes/bumper_visual.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tb4_shell_visual">
+          <pose>0 0 0.0942 1.5708 0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/shell.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_front_left_visual">
+          <pose>0.0306 0.1143 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_front_right_visual">
+          <pose>0.0306 -0.1143 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_rear_left_visual">
+          <pose>-0.0761 0.0907 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_rear_right_visual">
+          <pose>-0.0761 -0.0907 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_sensor_plate_visual">
+          <pose>0 0 0.3468 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_sensor_plate.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="rplidar_visual">
+          <pose>-0.04 0 0.1929 0 0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/rplidar.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="oakd_camera_bracket_visual">
+          <pose>-0.118 0 0.1468 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/camera_bracket.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="oakd_pro_visual">
+          <pose>-0.0596 0 0.2435 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/oakd_pro.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <link name="left_wheel">
+        <pose>0 0.16 -0.035 -1.5707 0 0</pose>
+        <inertial>
+          <mass>0.08</mass>
+          <inertia>
+            <ixx>0.00003</ixx>
+            <iyy>0.00003</iyy>
+            <izz>0.00005</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+      <link name="right_wheel">
+        <pose>0 -0.16 -0.035 -1.5707 0 0</pose>
+        <inertial>
+          <mass>0.08</mass>
+          <inertia>
+            <ixx>0.00003</ixx>
+            <iyy>0.00003</iyy>
+            <izz>0.00005</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+      <joint name="left_wheel_joint" type="revolute">
+        <parent>base_link</parent>
+        <child>left_wheel</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+      <joint name="right_wheel_joint" type="revolute">
+        <parent>base_link</parent>
+        <child>right_wheel</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <left_joint>left_wheel_joint</left_joint>
+        <right_joint>right_wheel_joint</right_joint>
+        <wheel_separation>0.32</wheel_separation>
+        <wheel_radius>0.04</wheel_radius>
+        <topic>/robot1/cmd_vel</topic>
+        <odom_topic>/robot1/odom_raw</odom_topic>
+        <tf_topic>/robot1/tf</tf_topic>
+        <frame_id>robot1/odom</frame_id>
+        <child_frame_id>robot1/base_link</child_frame_id>
+        <odom_publish_frequency>30</odom_publish_frequency>
+      </plugin>
+    </model>
+
+    <model name="robot2">
+      <pose>0 1 0.08 0 0 0</pose>
+      <link name="base_link">
+        <inertial>
+          <mass>2.5</mass>
+          <inertia>
+            <ixx>0.04</ixx>
+            <iyy>0.04</iyy>
+            <izz>0.06</izz>
+          </inertia>
+        </inertial>
+        <collision name="base_collision">
+          <geometry>
+            <box>
+              <size>0.34 0.28 0.12</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="create3_body_visual">
+          <pose>0 0 0.0392 0 0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/irobot_create_description/meshes/body_visual.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="create3_bumper_visual">
+          <pose>0 0 0.0392 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/irobot_create_description/meshes/bumper_visual.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tb4_shell_visual">
+          <pose>0 0 0.0942 1.5708 0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/shell.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_front_left_visual">
+          <pose>0.0306 0.1143 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_front_right_visual">
+          <pose>0.0306 -0.1143 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_rear_left_visual">
+          <pose>-0.0761 0.0907 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_rear_right_visual">
+          <pose>-0.0761 -0.0907 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_sensor_plate_visual">
+          <pose>0 0 0.3468 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_sensor_plate.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="rplidar_visual">
+          <pose>-0.04 0 0.1929 0 0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/rplidar.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="oakd_camera_bracket_visual">
+          <pose>-0.118 0 0.1468 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/camera_bracket.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="oakd_pro_visual">
+          <pose>-0.0596 0 0.2435 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/oakd_pro.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <link name="left_wheel">
+        <pose>0 0.16 -0.035 -1.5707 0 0</pose>
+        <inertial>
+          <mass>0.08</mass>
+          <inertia>
+            <ixx>0.00003</ixx>
+            <iyy>0.00003</iyy>
+            <izz>0.00005</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+      <link name="right_wheel">
+        <pose>0 -0.16 -0.035 -1.5707 0 0</pose>
+        <inertial>
+          <mass>0.08</mass>
+          <inertia>
+            <ixx>0.00003</ixx>
+            <iyy>0.00003</iyy>
+            <izz>0.00005</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+      <joint name="left_wheel_joint" type="revolute">
+        <parent>base_link</parent>
+        <child>left_wheel</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+      <joint name="right_wheel_joint" type="revolute">
+        <parent>base_link</parent>
+        <child>right_wheel</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <left_joint>left_wheel_joint</left_joint>
+        <right_joint>right_wheel_joint</right_joint>
+        <wheel_separation>0.32</wheel_separation>
+        <wheel_radius>0.04</wheel_radius>
+        <topic>/robot2/cmd_vel</topic>
+        <odom_topic>/robot2/odom_raw</odom_topic>
+        <tf_topic>/robot2/tf</tf_topic>
+        <frame_id>robot2/odom</frame_id>
+        <child_frame_id>robot2/base_link</child_frame_id>
+        <odom_publish_frequency>30</odom_publish_frequency>
+      </plugin>
+    </model>
+  </world>
+</sdf>

@@ -1,0 +1,44 @@
+paper_swarm_coordinator:
+  ros__parameters:
+    robot_namespaces: ["robot1", "robot2"]
+    odom_topic: "odom"
+    pose_topic: ""
+    target_topic: "/target_pose"
+    formation_mode: "leader_follower"
+    leader_namespace: "robot1"
+    follower_distance_m: 0.8
+    follower_lateral_offset_m: 0.0
+    target_reached_tolerance_m: 0.35
+
+target_publisher:
+  ros__parameters:
+    mode: "fixed"
+    target_x: 1.5
+    target_y: 0.0
+    random_bounds: [-1.8, 1.8, -1.2, 1.2]
+
+rviz_target_bridge:
+  ros__parameters:
+    goal_pose_namespaces: [""]
+    clicked_point_namespaces: ["", "robot1", "robot2"]
+    goal_pose_topic: "goal_pose"
+    clicked_point_topic: "clicked_point"
+    target_topic: "/target_pose"
+    target_frame: "map"
+
+simple_goal_follower:
+  ros__parameters:
+    robot_namespaces: ["robot1", "robot2"]
+    odom_topic: "odom"
+    cmd_vel_topic: "cmd_vel"
+    cmd_vel_stamped: true
+    goal_tolerance_m: 0.20
+    max_linear_velocity: 0.18
+    max_angular_velocity: 0.9
+
+metrics_logger:
+  ros__parameters:
+    robot_namespaces: ["robot1", "robot2"]
+    odom_topic: "odom"
+    pose_topic: ""
+    output_dir: "metrics/official_tb4_sim"

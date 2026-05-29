@@ -1,0 +1,55 @@
+paper_swarm_coordinator:
+  ros__parameters:
+    robot_namespaces: ["robot1", "robot2"]
+    odom_topic: "odom"
+    pose_topic: "amcl_pose"
+    target_topic: "/target_pose"
+    formation_mode: "leader_follower"
+    leader_namespace: "robot1"
+    follower_distance_m: 0.8
+    follower_lateral_offset_m: 0.0
+    target_reached_tolerance_m: 0.35
+
+rviz_target_bridge:
+  ros__parameters:
+    goal_pose_namespaces: [""]
+    clicked_point_namespaces: ["", "robot1", "robot2"]
+    goal_pose_topic: "goal_pose"
+    clicked_point_topic: "clicked_point"
+    target_topic: "/target_pose"
+    target_frame: "map"
+
+nav2_goal_dispatcher:
+  ros__parameters:
+    robot_namespaces: ["robot1"]
+    goal_topic: "goal_pose"
+    map_topic: "map"
+    action_name: "navigate_to_pose"
+    map_frame: "map"
+    dispatch_period_sec: 0.5
+    goal_change_tolerance_m: 0.05
+    goal_min_clearance_m: 0.25
+    goal_occupied_threshold: 50
+    reject_unknown_goals: true
+
+simple_goal_follower:
+  ros__parameters:
+    robot_namespaces: ["robot2"]
+    odom_topic: "odom"
+    pose_topic: "amcl_pose"
+    goal_topic: "goal_pose"
+    cmd_vel_unstamped_topics: ["cmd_vel_unstamped"]
+    control_period_sec: 0.1
+    goal_tolerance_m: 0.18
+    heading_tolerance_rad: 0.45
+    linear_gain: 0.55
+    angular_gain: 1.4
+    max_linear_velocity: 0.06
+    max_angular_velocity: 0.3
+
+metrics_logger:
+  ros__parameters:
+    robot_namespaces: ["robot1", "robot2"]
+    odom_topic: "odom"
+    pose_topic: "amcl_pose"
+    output_dir: "metrics/real_nav2_two_tb4"

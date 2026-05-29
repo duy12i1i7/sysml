@@ -1,0 +1,19 @@
+# Colcon generated files
+/build/
+/install/
+/log/
+
+# Runtime outputs
+/metrics/*
+!/metrics/paper_sim_trials/
+!/metrics/paper_sim_trials/**
+!/metrics/paper_real_deployment/
+!/metrics/paper_real_deployment/**
+
+# Python generated files
+__pycache__/
+*.py[cod]
+
+# Local editor and OS files
+.DS_Store
+*~

@@ -1,0 +1,2 @@
+success,duration_s,role_switches,min_separation_m,robot1_path_m,robot2_path_m,requirement_refs
+1,5.504,0,1.0000,0.7815,0.4900,REQ-001;REQ-003;REQ-004;REQ-005;REQ-006

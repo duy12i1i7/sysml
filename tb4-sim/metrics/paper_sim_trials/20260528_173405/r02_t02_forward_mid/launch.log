@@ -1,0 +1,64 @@
+[INFO] [launch]: All log files can be found below /home/avis/.ros/log/2026-05-28-17-35-38-623241-avis-25911
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [gazebo-1]: process started with pid [25932]
+[INFO] [parameter_bridge-2]: process started with pid [25933]
+[INFO] [parameter_bridge-3]: process started with pid [25935]
+[INFO] [parameter_bridge-4]: process started with pid [25936]
+[INFO] [odom_offsetter-5]: process started with pid [25937]
+[INFO] [coordinator-6]: process started with pid [25938]
+[INFO] [target_publisher-7]: process started with pid [25939]
+[INFO] [simple_goal_follower-8]: process started with pid [25940]
+[INFO] [metrics_logger-9]: process started with pid [25941]
+[parameter_bridge-3] [WARN] [1779964538.787416115] [rcl]: ROS_LOCALHOST_ONLY is deprecated but still honored if it is enabled. Use ROS_AUTOMATIC_DISCOVERY_RANGE and ROS_STATIC_PEERS instead.
+[parameter_bridge-3] [WARN] [1779964538.787430224] [rcl]: 'localhost_only' is disabled, 'automatic_discovery_range' and 'static_peers' will be used.
+[parameter_bridge-4] [WARN] [1779964538.787530396] [rcl]: ROS_LOCALHOST_ONLY is deprecated but still honored if it is enabled. Use ROS_AUTOMATIC_DISCOVERY_RANGE and ROS_STATIC_PEERS instead.
+[parameter_bridge-4] [WARN] [1779964538.787539264] [rcl]: 'localhost_only' is disabled, 'automatic_discovery_range' and 'static_peers' will be used.
+[parameter_bridge-2] [WARN] [1779964538.788939784] [rcl]: ROS_LOCALHOST_ONLY is deprecated but still honored if it is enabled. Use ROS_AUTOMATIC_DISCOVERY_RANGE and ROS_STATIC_PEERS instead.
+[parameter_bridge-2] [WARN] [1779964538.788951443] [rcl]: 'localhost_only' is disabled, 'automatic_discovery_range' and 'static_peers' will be used.
+[parameter_bridge-4] [INFO] [1779964538.811161322] [robot2_bridge]: Creating GZ->ROS Bridge: [/robot2/cmd_vel (gz.msgs.Twist) -> /robot2/cmd_vel (geometry_msgs/msg/Twist)] (Lazy 0)
+[parameter_bridge-3] [INFO] [1779964538.811161329] [robot1_bridge]: Creating GZ->ROS Bridge: [/robot1/cmd_vel (gz.msgs.Twist) -> /robot1/cmd_vel (geometry_msgs/msg/Twist)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1779964538.811801234] [clock_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-3] [INFO] [1779964538.812471862] [robot1_bridge]: Creating ROS->GZ Bridge: [/robot1/cmd_vel (geometry_msgs/msg/Twist) -> /robot1/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-4] [INFO] [1779964538.812543138] [robot2_bridge]: Creating ROS->GZ Bridge: [/robot2/cmd_vel (geometry_msgs/msg/Twist) -> /robot2/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-3] [INFO] [1779964538.812944711] [robot1_bridge]: Creating GZ->ROS Bridge: [/robot1/odom_raw (gz.msgs.Odometry) -> /robot1/odom_raw (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-4] [INFO] [1779964538.812968716] [robot2_bridge]: Creating GZ->ROS Bridge: [/robot2/odom_raw (gz.msgs.Odometry) -> /robot2/odom_raw (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-3] [INFO] [1779964538.813917385] [robot1_bridge]: Creating ROS->GZ Bridge: [/robot1/odom_raw (nav_msgs/msg/Odometry) -> /robot1/odom_raw (gz.msgs.Odometry)] (Lazy 0)
+[parameter_bridge-4] [INFO] [1779964538.813941909] [robot2_bridge]: Creating ROS->GZ Bridge: [/robot2/odom_raw (nav_msgs/msg/Odometry) -> /robot2/odom_raw (gz.msgs.Odometry)] (Lazy 0)
+[odom_offsetter-5] [WARN] [1779964538.873622951] [rcl]: ROS_LOCALHOST_ONLY is deprecated but still honored if it is enabled. Use ROS_AUTOMATIC_DISCOVERY_RANGE and ROS_STATIC_PEERS instead.
+[odom_offsetter-5] [WARN] [1779964538.873630311] [rcl]: 'localhost_only' is disabled, 'automatic_discovery_range' and 'static_peers' will be used.
+[target_publisher-7] [WARN] [1779964538.912125530] [rcl]: ROS_LOCALHOST_ONLY is deprecated but still honored if it is enabled. Use ROS_AUTOMATIC_DISCOVERY_RANGE and ROS_STATIC_PEERS instead.
+[target_publisher-7] [WARN] [1779964538.912132740] [rcl]: 'localhost_only' is disabled, 'automatic_discovery_range' and 'static_peers' will be used.
+[simple_goal_follower-8] [WARN] [1779964538.921231649] [rcl]: ROS_LOCALHOST_ONLY is deprecated but still honored if it is enabled. Use ROS_AUTOMATIC_DISCOVERY_RANGE and ROS_STATIC_PEERS instead.
+[simple_goal_follower-8] [WARN] [1779964538.921238298] [rcl]: 'localhost_only' is disabled, 'automatic_discovery_range' and 'static_peers' will be used.
+[coordinator-6] [WARN] [1779964538.935297438] [rcl]: ROS_LOCALHOST_ONLY is deprecated but still honored if it is enabled. Use ROS_AUTOMATIC_DISCOVERY_RANGE and ROS_STATIC_PEERS instead.
+[coordinator-6] [WARN] [1779964538.935303919] [rcl]: 'localhost_only' is disabled, 'automatic_discovery_range' and 'static_peers' will be used.
+[metrics_logger-9] [WARN] [1779964538.937325569] [rcl]: ROS_LOCALHOST_ONLY is deprecated but still honored if it is enabled. Use ROS_AUTOMATIC_DISCOVERY_RANGE and ROS_STATIC_PEERS instead.
+[metrics_logger-9] [WARN] [1779964538.937330867] [rcl]: 'localhost_only' is disabled, 'automatic_discovery_range' and 'static_peers' will be used.
+[metrics_logger-9] [INFO] [1779964538.970388923] [metrics_logger]: Writing metrics to /home/avis/Downloads/HA_paper/tb4-sim/metrics/paper_sim_trials/20260528_173405/r02_t02_forward_mid
+[coordinator-6] [INFO] [1779964538.970583465] [paper_swarm_coordinator]: Coordinator ready for robot1, robot2
+[parameter_bridge-3] [INFO] [1779964540.966126823] [robot1_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[parameter_bridge-4] [INFO] [1779964540.966138180] [robot2_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [metrics_logger-9]: sending signal 'SIGINT' to process[metrics_logger-9]
+[INFO] [simple_goal_follower-8]: sending signal 'SIGINT' to process[simple_goal_follower-8]
+[INFO] [target_publisher-7]: sending signal 'SIGINT' to process[target_publisher-7]
+[INFO] [coordinator-6]: sending signal 'SIGINT' to process[coordinator-6]
+[INFO] [odom_offsetter-5]: sending signal 'SIGINT' to process[odom_offsetter-5]
+[INFO] [parameter_bridge-4]: sending signal 'SIGINT' to process[parameter_bridge-4]
+[INFO] [parameter_bridge-3]: sending signal 'SIGINT' to process[parameter_bridge-3]
+[INFO] [parameter_bridge-2]: sending signal 'SIGINT' to process[parameter_bridge-2]
+[INFO] [gazebo-1]: sending signal 'SIGINT' to process[gazebo-1]
+[parameter_bridge-4] [INFO] [1779964547.248151713] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[parameter_bridge-3] [INFO] [1779964547.248511934] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[parameter_bridge-2] [INFO] [1779964547.248847533] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [parameter_bridge-3]: process has finished cleanly [pid 25935]
+[INFO] [parameter_bridge-2]: process has finished cleanly [pid 25933]
+[INFO] [parameter_bridge-4]: process has finished cleanly [pid 25936]
+[INFO] [target_publisher-7]: process has finished cleanly [pid 25939]
+[INFO] [metrics_logger-9]: process has finished cleanly [pid 25941]
+[INFO] [odom_offsetter-5]: process has finished cleanly [pid 25937]
+[INFO] [simple_goal_follower-8]: process has finished cleanly [pid 25940]
+[INFO] [coordinator-6]: process has finished cleanly [pid 25938]
+[ERROR] [gazebo-1]: process[gazebo-1] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'
+[INFO] [gazebo-1]: sending signal 'SIGTERM' to process[gazebo-1]
+[ERROR] [gazebo-1]: process has died [pid 25932, exit code -15, cmd 'ruby /opt/ros/jazzy/opt/gz_tools_vendor/bin/gz sim /home/avis/Downloads/HA_paper/tb4-sim/install/paper_tb4_swarm/share/paper_tb4_swarm/worlds/two_tb4_stable.sdf -r -s -v 1 --force-version 8'].

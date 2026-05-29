@@ -1,0 +1,7 @@
+image: auto_robot1_full_20260526_194332.pgm
+mode: trinary
+resolution: 0.050
+origin: [0.283, -0.060, 0]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196

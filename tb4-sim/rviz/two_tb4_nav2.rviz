@@ -1,0 +1,148 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Tool Properties
+    Name: Tool Properties
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Cell Size: 1
+      Class: rviz_default_plugins/Grid
+      Color: 160; 160; 164
+      Enabled: true
+      Line Style:
+        Line Width: 0.03
+        Value: Lines
+      Name: Grid
+      Plane: XY
+      Plane Cell Count: 10
+      Reference Frame: <Fixed Frame>
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: Map Markers
+      Namespaces:
+        occupied: true
+        free: true
+        safe_goal: true
+        unsafe_goal: true
+      Topic:
+        Depth: 1
+        Durability Policy: Transient Local
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /swarm/map_markers
+      Value: true
+    - Class: rviz_default_plugins/PoseWithCovariance
+      Enabled: true
+      Name: Robot1 AMCL Pose
+      Shape:
+        Alpha: 1
+        Axes Length: 0.35
+        Axes Radius: 0.03
+        Color: 25; 170; 255
+        Head Length: 0.18
+        Head Radius: 0.07
+        Shaft Length: 0.28
+        Shaft Radius: 0.025
+        Value: Arrow
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /robot1/amcl_pose
+      Value: true
+    - Class: rviz_default_plugins/PoseWithCovariance
+      Enabled: true
+      Name: Robot2 AMCL Pose
+      Shape:
+        Alpha: 1
+        Axes Length: 0.35
+        Axes Radius: 0.03
+        Color: 255; 170; 25
+        Head Length: 0.18
+        Head Radius: 0.07
+        Shaft Length: 0.28
+        Shaft Radius: 0.025
+        Value: Arrow
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /robot2/amcl_pose
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz_default_plugins/Path
+      Color: 255; 25; 25
+      Enabled: true
+      Line Style: Lines
+      Line Width: 0.03
+      Name: Robot1 Nav2 Plan
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: Arrows
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /robot1/plan
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: map
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
+      Line color: 128; 128; 0
+    - Class: rviz_default_plugins/SetInitialPose
+      Name: R1 Pose - blue
+      Topic: /robot1/initialpose
+    - Class: rviz_default_plugins/SetInitialPose
+      Name: R2 Pose - orange
+      Topic: /robot2/initialpose
+    - Class: rviz_default_plugins/SetGoal
+      Name: SWARM Goal
+      Topic: /goal_pose
+    - Class: rviz_default_plugins/PublishPoint
+      Name: SWARM Point
+      Single click: true
+      Topic: /clicked_point
+  Transformation:
+    Current:
+      Class: rviz_default_plugins/TF
+  Value: true
+  Views:
+    Current:
+      Angle: -1.5707963705062866
+      Class: rviz_default_plugins/TopDownOrtho
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.01
+      Scale: 5
+      Target Frame: <Fixed Frame>
+      Value: TopDownOrtho (rviz_default_plugins)
+      X: 1.77
+      Y: 1.44
+    Saved: ~
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 900
+  Hide Left Dock: false
+  Hide Right Dock: false
+  Width: 1200

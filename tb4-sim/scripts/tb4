@@ -1,0 +1,868 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
+ROS_DISTRO="${ROS_DISTRO:-jazzy}"
+SPIN_TIME_WAS_SET="${SPIN_TIME+x}"
+TB4_TOPIC_TIMEOUT_WAS_SET="${TB4_TOPIC_TIMEOUT+x}"
+SPIN_TIME="${SPIN_TIME:-8}"
+
+usage() {
+  cat <<'USAGE'
+Usage: ./scripts/tb4 <command> [args]
+
+Commands:
+  build              Build the ROS 2 workspace.
+  sim                Run stable two-TurtleBot4 simulation, server-only.
+  sim --gui          Run stable simulation with Gazebo GUI.
+  sim-rviz           Run stable simulation and accept RViz /goal_pose targets.
+  sim-official       Run official TurtleBot4 Gazebo stack, server-only.
+  check-default      Check one reset/default tb4-lite robot.
+  setup-real         Print physical robot namespace setup guide.
+  check-real         Check /robot1 and /robot2 real robot topics.
+  check-map-real     Check one robot needed for mapping; robot2 can be off.
+  real               Run real two-robot observation mode; no velocity commands.
+  drive-real         Run real two-robot mode with direct velocity commands.
+  drive-real-rviz    Direct-drive real robots toward targets clicked in RViz.
+  slam-real          Start TurtleBot4 SLAM for one namespaced robot.
+  manual-map-real    Start SLAM + RViz for one robot; drive it from keyboard.
+  teleop-real        Keyboard-drive one robot during manual mapping.
+  explore-real       Run Nav2 frontier exploration for one namespaced robot.
+  clear-map-real     Run forward-only lidar clearance SLAM for one robot.
+  wall-map-real      Run conservative lidar wall-following SLAM for one robot.
+  save-map           Save a SLAM map from one namespaced robot.
+  nav2-real          Run two-robot Nav2 mode using a saved map and RViz target.
+  paper-plan         Print the paper experiment protocol.
+  paper-sim-trials   Run repeatable stable-simulation trials and aggregate CSVs.
+  paper-real-check   Run and save the physical deployment validation check.
+  rviz               Open TurtleBot4 RViz for robot1/robot2, or swarm RViz.
+  stop-real          Publish zero velocity to both robots.
+  clean              Stop stale Gazebo / ROS simulation processes.
+  topics             Print ROS topics with this project environment.
+
+Examples:
+  ./scripts/tb4 build
+  ./scripts/tb4 sim
+  ./scripts/tb4 sim --gui
+  ./scripts/tb4 sim-rviz
+  ./scripts/tb4 check-real
+  ./scripts/tb4 check-map-real robot1
+  ./scripts/tb4 real use_target_publisher:=true
+  ./scripts/tb4 drive-real
+  ./scripts/tb4 drive-real-rviz
+  ./scripts/tb4 slam-real robot1
+  ./scripts/tb4 manual-map-real robot1
+  ./scripts/tb4 teleop-real robot1
+  ./scripts/tb4 explore-real robot1
+  ./scripts/tb4 clear-map-real robot1
+  ./scripts/tb4 wall-map-real robot1
+  ./scripts/tb4 save-map robot1 maps/lab
+  ./scripts/tb4 nav2-real maps/lab.yaml
+  ./scripts/tb4 paper-plan
+  ./scripts/tb4 paper-sim-trials --repeats 3
+  ./scripts/tb4 paper-real-check
+  ./scripts/tb4 rviz swarm
+  ./scripts/tb4 stop-real
+USAGE
+}
+
+source_ros() {
+  source "/opt/ros/${ROS_DISTRO}/setup.bash"
+}
+
+source_project() {
+  require_setup
+  source_ros
+  source "${PROJECT_DIR}/install/setup.bash"
+}
+
+require_setup() {
+  if [[ ! -f "${PROJECT_DIR}/install/setup.bash" ]]; then
+    echo "Workspace is not built yet. Run: ./scripts/tb4 build" >&2
+    exit 2
+  fi
+}
+
+setup_fastdds_env() {
+  export RMW_IMPLEMENTATION="${RMW_IMPLEMENTATION:-rmw_fastrtps_cpp}"
+  export ROS_DOMAIN_ID="${ROS_DOMAIN_ID:-0}"
+  export RMW_FASTRTPS_USE_SHM="${RMW_FASTRTPS_USE_SHM:-0}"
+  export FASTDDS_BUILTIN_TRANSPORTS="${FASTDDS_BUILTIN_TRANSPORTS:-UDPv4}"
+  export ROS_AUTOMATIC_DISCOVERY_RANGE="${ROS_AUTOMATIC_DISCOVERY_RANGE:-SUBNET}"
+  if [[ -z "${ROS_STATIC_PEERS:-}" ]]; then
+    export ROS_STATIC_PEERS="${TB4_STATIC_PEERS:-192.168.10.100;192.168.10.101}"
+  fi
+  if [[ -z "${FASTRTPS_DEFAULT_PROFILES_FILE:-}" && -f /etc/turtlebot4/fastdds_rpi.xml ]]; then
+    export FASTRTPS_DEFAULT_PROFILES_FILE=/etc/turtlebot4/fastdds_rpi.xml
+  fi
+  unset ROS_DISCOVERY_SERVER
+  unset CYCLONEDDS_URI
+  export ROS_LOCALHOST_ONLY="${ROS_LOCALHOST_ONLY:-0}"
+}
+
+refresh_ros_daemon() {
+  ros2 daemon stop >/dev/null 2>&1 || true
+  ros2 daemon start >/dev/null 2>&1 || true
+}
+
+topic_list() {
+  ros2 topic list -t --no-daemon --spin-time "${SPIN_TIME}"
+}
+
+has_topic() {
+  local topics="$1"
+  local topic="$2"
+  grep -Eq "^${topic}([[:space:]]|$)" <<<"${topics}"
+}
+
+topic_has_message() {
+  local topic="$1"
+  local msg_type="$2"
+  local timeout_sec="${3:-${TB4_TOPIC_TIMEOUT:-8}}"
+  timeout "${timeout_sec}" ros2 topic echo --once "${topic}" "${msg_type}" >/dev/null 2>&1
+}
+
+cmd_build() {
+  source_ros
+  cd "${PROJECT_DIR}"
+  colcon build --symlink-install --base-paths ros2_ws/src
+}
+
+cmd_sim() {
+  source_project
+  setup_fastdds_env
+
+  if [[ "${1:-}" == "--gui" ]]; then
+    shift
+    local world="${PROJECT_DIR}/install/paper_tb4_swarm/share/paper_tb4_swarm/worlds/two_tb4_stable.sdf"
+    exec ros2 launch paper_tb4_swarm stable_two_tb4.launch.py \
+      gz_args:="${world} -r -v 1" \
+      "$@"
+  fi
+
+  exec ros2 launch paper_tb4_swarm stable_two_tb4.launch.py "$@"
+}
+
+cmd_sim_official() {
+  source_project
+  setup_fastdds_env
+  exec ros2 launch paper_tb4_swarm official_two_tb4.launch.py "$@"
+}
+
+cmd_check_default() {
+  source_ros
+  setup_fastdds_env
+
+  echo "Checking one reset/default TurtleBot4 Lite graph..."
+  echo "  RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION}"
+  echo "  ROS_DOMAIN_ID=${ROS_DOMAIN_ID}"
+  echo "  FASTRTPS_DEFAULT_PROFILES_FILE=${FASTRTPS_DEFAULT_PROFILES_FILE:-<unset>}"
+
+  local topics
+  if ! topics="$(topic_list)"; then
+    echo "ERROR: ros2 topic list failed. Check Wi-Fi, firewall, FastDDS, and ROS_DOMAIN_ID." >&2
+    exit 2
+  fi
+  printf '%s\n' "${topics}"
+
+  local missing=0
+  for topic in /odom /cmd_vel_unstamped /scan; do
+    if ! has_topic "${topics}" "${topic}"; then
+      echo "MISSING: ${topic}" >&2
+      missing=1
+    fi
+  done
+
+  if has_topic "${topics}" "/oakd/rgb/preview/image_raw"; then
+    echo "OK: camera preview topic is visible."
+  else
+    echo "WARN: /oakd/rgb/preview/image_raw is not visible; this does not block base motion." >&2
+  fi
+
+  if [[ "${missing}" -ne 0 ]]; then
+    echo "Default TurtleBot4 Lite check failed." >&2
+    exit 2
+  fi
+
+  echo "Default TurtleBot4 Lite check passed for one robot."
+  echo "Next set ROBOT_NAMESPACE=robot1 and ROBOT_NAMESPACE=robot2 with turtlebot4-setup."
+}
+
+cmd_check_real() {
+  source_project
+  setup_fastdds_env
+
+  local check_motion=0
+  local check_messages=0
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --motion)
+        check_motion=1
+        shift
+        ;;
+      --messages|--strict)
+        check_messages=1
+        shift
+        ;;
+      -h|--help)
+        cat <<'USAGE'
+Usage: ./scripts/tb4 check-real [--motion] [--messages]
+
+Checks:
+  /robot1/odom
+  /robot2/odom
+  /robot1/scan
+  /robot2/scan
+
+With --motion, also checks:
+  /robot1/cmd_vel_unstamped or /robot1/cmd_vel
+  /robot2/cmd_vel_unstamped or /robot2/cmd_vel
+
+With --messages, waits for real Odometry and LaserScan messages. This catches
+stale DDS topic names that are visible but not publishing data.
+USAGE
+        return 0
+        ;;
+      *)
+        echo "Unknown check-real argument: $1" >&2
+        exit 2
+        ;;
+    esac
+  done
+
+  echo "Checking canonical two-TurtleBot4 graph..."
+  echo "  RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION}"
+  echo "  ROS_DOMAIN_ID=${ROS_DOMAIN_ID}"
+  echo "  FASTRTPS_DEFAULT_PROFILES_FILE=${FASTRTPS_DEFAULT_PROFILES_FILE:-<unset>}"
+
+  local topics
+  if ! topics="$(topic_list)"; then
+    echo "ERROR: ros2 topic list failed. Check Wi-Fi, firewall, FastDDS, and ROS_DOMAIN_ID." >&2
+    exit 2
+  fi
+
+  local missing=0
+  for topic in /robot1/odom /robot2/odom /robot1/scan /robot2/scan; do
+    if has_topic "${topics}" "${topic}"; then
+      echo "OK: ${topic}"
+    elif [[ "${check_messages}" -eq 1 ]]; then
+      echo "WAITING: ${topic} was not in the initial graph snapshot"
+    else
+      echo "MISSING: ${topic}" >&2
+      missing=1
+    fi
+  done
+
+  if [[ "${check_messages}" -eq 1 ]]; then
+    local timeout_sec="${TB4_TOPIC_TIMEOUT:-8}"
+    local graph_check_args=(--timeout "${timeout_sec}")
+    if [[ "${check_motion}" -eq 1 ]]; then
+      graph_check_args+=(--motion)
+    fi
+    if ! ros2 run paper_tb4_swarm real_graph_check "${graph_check_args[@]}"; then
+      missing=1
+    fi
+  elif [[ "${check_motion}" -eq 1 ]]; then
+      for namespace in robot1 robot2; do
+        if has_topic "${topics}" "/${namespace}/cmd_vel_unstamped"; then
+          echo "OK: /${namespace}/cmd_vel_unstamped"
+        elif has_topic "${topics}" "/${namespace}/cmd_vel"; then
+          echo "OK: /${namespace}/cmd_vel"
+        else
+          echo "MISSING: /${namespace}/cmd_vel_unstamped or /${namespace}/cmd_vel" >&2
+          missing=1
+        fi
+      done
+  fi
+
+  if [[ "${missing}" -ne 0 ]]; then
+    if has_topic "${topics}" "/odom"; then
+      cat >&2 <<'MESSAGE'
+
+Detected root /odom but not both /robot1/odom and /robot2/odom.
+That is the normal single-robot tb4-lite reset state. Configure namespaces with
+the official TurtleBot4 multiple-robots workflow:
+
+  robot 1: ROS_DOMAIN_ID=0, ROBOT_NAMESPACE=robot1, FastDDS, Simple Discovery
+  robot 2: ROS_DOMAIN_ID=0, ROBOT_NAMESPACE=robot2, FastDDS, Simple Discovery
+
+Then rerun:
+  ./scripts/tb4 check-real
+MESSAGE
+    else
+      echo "The two-robot graph is incomplete. Bring the missing robot online and rerun check-real." >&2
+    fi
+    cat >&2 <<'MESSAGE'
+
+If /robot*/scan is visible but does not publish LaserScan data, the lidar side
+or DDS stream is stale. If /robot*/scan publishes but /robot*/odom does not, the
+Create3/base odometry side is not ready. On that physical robot, confirm the
+namespace in turtlebot4-setup and restart the TurtleBot4 service:
+
+  sudo systemctl restart turtlebot4.service
+
+Then restart the ROS 2 daemon on this laptop and rerun the strict check:
+
+  ros2 daemon stop; ros2 daemon start
+  ./scripts/tb4 check-real --motion --messages
+MESSAGE
+    exit 2
+  fi
+
+  echo "Canonical two-TurtleBot4 graph check passed."
+}
+
+check_mapping_robot() {
+  local namespace="${1:-robot1}"
+  namespace="${namespace#/}"
+  local topics
+  if ! topics="$(topic_list)"; then
+    echo "ERROR: ros2 topic list failed. Check Wi-Fi, firewall, FastDDS, and ROS_DOMAIN_ID." >&2
+    exit 2
+  fi
+
+  local missing=0
+  for topic in "/${namespace}/odom" "/${namespace}/scan"; do
+    if has_topic "${topics}" "${topic}"; then
+      echo "OK: ${topic}"
+    else
+      echo "MISSING: ${topic}" >&2
+      missing=1
+    fi
+  done
+
+  local timeout_sec="${TB4_TOPIC_TIMEOUT:-8}"
+  if topic_has_message "/${namespace}/odom" nav_msgs/msg/Odometry "${timeout_sec}"; then
+    echo "OK: /${namespace}/odom is publishing Odometry"
+  else
+    echo "NO DATA: /${namespace}/odom did not publish Odometry within ${timeout_sec}s" >&2
+    missing=1
+  fi
+
+  if topic_has_message "/${namespace}/scan" sensor_msgs/msg/LaserScan "${timeout_sec}"; then
+    echo "OK: /${namespace}/scan is publishing LaserScan"
+  else
+    echo "NO DATA: /${namespace}/scan did not publish LaserScan within ${timeout_sec}s" >&2
+    missing=1
+  fi
+
+  if has_topic "${topics}" "/${namespace}/cmd_vel_unstamped"; then
+    echo "OK: /${namespace}/cmd_vel_unstamped"
+  elif has_topic "${topics}" "/${namespace}/cmd_vel"; then
+    echo "OK: /${namespace}/cmd_vel"
+  else
+    echo "MISSING: /${namespace}/cmd_vel_unstamped or /${namespace}/cmd_vel" >&2
+    missing=1
+  fi
+
+  if [[ "${missing}" -ne 0 ]]; then
+    echo "Cannot start mapping for ${namespace}." >&2
+    exit 2
+  fi
+
+  echo "Single-robot mapping check passed for /${namespace}; robot2 is not required."
+}
+
+cmd_check_map_real() {
+  source_project
+  setup_fastdds_env
+
+  local namespace="${1:-robot1}"
+  namespace="${namespace#/}"
+  echo "Checking single mapping robot /${namespace}..."
+  check_mapping_robot "${namespace}"
+}
+
+has_launch_key() {
+  local key="$1"
+  shift || true
+  local arg
+  for arg in "$@"; do
+    if [[ "${arg}" == "${key}:="* ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+cmd_real() {
+  local check_args=()
+  local motion_enabled=0
+  for arg in "$@"; do
+    if [[ "${arg}" == "use_cmd_vel_follower:=true" ]]; then
+      check_args+=(--motion)
+      motion_enabled=1
+    fi
+  done
+
+  if [[ "${TB4_SKIP_PREFLIGHT:-0}" != "1" ]]; then
+    cmd_check_real "${check_args[@]}"
+  else
+    source_project
+    setup_fastdds_env
+  fi
+
+  if [[ "${motion_enabled}" -ne 1 ]]; then
+    cat <<'MESSAGE'
+Starting REAL OBSERVATION MODE.
+No velocity command node is enabled, so the robots will not move.
+
+To move the physical TurtleBot4 robots, use:
+  ./scripts/tb4 drive-real
+
+Equivalent explicit launch:
+  ./scripts/tb4 real use_target_publisher:=true use_cmd_vel_follower:=true
+MESSAGE
+  else
+    echo "Starting REAL DRIVE MODE. Direct velocity follower is enabled."
+  fi
+
+  exec ros2 launch paper_tb4_swarm real_two_tb4.launch.py "$@"
+}
+
+cmd_drive_real() {
+  local args=("$@")
+  if ! has_launch_key "use_target_publisher" "${args[@]}"; then
+    args+=("use_target_publisher:=true")
+  fi
+  if ! has_launch_key "use_cmd_vel_follower" "${args[@]}"; then
+    args+=("use_cmd_vel_follower:=true")
+  fi
+  cmd_real "${args[@]}"
+}
+
+cmd_sim_rviz() {
+  local args=("$@")
+  if ! has_launch_key "use_target_publisher" "${args[@]}"; then
+    args+=("use_target_publisher:=false")
+  fi
+  if ! has_launch_key "use_rviz_target" "${args[@]}"; then
+    args+=("use_rviz_target:=true")
+  fi
+  cmd_sim "${args[@]}"
+}
+
+cmd_drive_real_rviz() {
+  local args=("$@")
+  if ! has_launch_key "use_target_publisher" "${args[@]}"; then
+    args+=("use_target_publisher:=false")
+  fi
+  if ! has_launch_key "use_rviz_target" "${args[@]}"; then
+    args+=("use_rviz_target:=true")
+  fi
+  if ! has_launch_key "use_cmd_vel_follower" "${args[@]}"; then
+    args+=("use_cmd_vel_follower:=true")
+  fi
+  cmd_real "${args[@]}"
+}
+
+cmd_slam_real() {
+  source_project
+  setup_fastdds_env
+
+  local namespace="${1:-robot1}"
+  if [[ $# -gt 0 ]]; then
+    shift
+  fi
+  namespace="${namespace#/}"
+
+  exec ros2 launch turtlebot4_navigation slam.launch.py namespace:="/${namespace}" "$@"
+}
+
+cmd_manual_map_real() {
+  source_project
+  setup_fastdds_env
+
+  local namespace="robot1"
+  if [[ $# -gt 0 && "${1}" != *":="* ]]; then
+    namespace="$1"
+    shift
+  fi
+  namespace="${namespace#/}"
+
+  if [[ "${TB4_SKIP_PREFLIGHT:-0}" != "1" ]]; then
+    check_mapping_robot "${namespace}"
+  fi
+
+  cat <<MESSAGE
+Starting MANUAL MAPPING for /${namespace}.
+This terminal runs SLAM and RViz only. It does not publish velocity commands.
+
+Open another terminal for keyboard driving:
+  cd ${PROJECT_DIR}
+  ./scripts/tb4 teleop-real ${namespace}
+
+When the RViz map looks complete:
+  1. Press Ctrl-C in the teleop terminal to stop driving.
+  2. Save the map:
+     ./scripts/tb4 save-map ${namespace} maps/lab
+  3. Press Ctrl-C here to stop SLAM/RViz.
+
+MESSAGE
+
+  exec ros2 launch paper_tb4_swarm real_manual_map_one_tb4.launch.py \
+    namespace:="/${namespace}" \
+    "$@"
+}
+
+cmd_teleop_real() {
+  source_project
+  setup_fastdds_env
+
+  local namespace="robot1"
+  if [[ $# -gt 0 && "${1}" != *":="* ]]; then
+    namespace="$1"
+    shift
+  fi
+  namespace="${namespace#/}"
+
+  if [[ "${TB4_SKIP_PREFLIGHT:-0}" != "1" ]]; then
+    check_mapping_robot "${namespace}"
+  fi
+
+  cat <<MESSAGE
+Keyboard teleop for /${namespace}.
+Use i/j/l/, and u/o/m/. for motion. Space or any unmapped key stops.
+Default speed is intentionally low: 0.12 m/s linear, 0.70 rad/s turn.
+Press Ctrl-C to stop driving; a zero velocity command is sent on exit.
+
+MESSAGE
+
+  exec ros2 run teleop_twist_keyboard teleop_twist_keyboard \
+    --ros-args \
+    -r cmd_vel:=/${namespace}/cmd_vel_unstamped \
+    -p speed:=0.12 \
+    -p turn:=0.70 \
+    "$@"
+}
+
+cmd_explore_real() {
+  source_project
+  setup_fastdds_env
+
+  local namespace="robot1"
+  if [[ $# -gt 0 && "${1}" != *":="* ]]; then
+    namespace="$1"
+    shift
+  fi
+  namespace="${namespace#/}"
+
+  if [[ "${TB4_SKIP_PREFLIGHT:-0}" != "1" ]]; then
+    check_mapping_robot "${namespace}"
+  fi
+
+  cat <<MESSAGE
+Starting autonomous FRONTIER MAPPING for /${namespace}.
+This will move the physical robot through Nav2 goals. Keep the floor clear and
+watch RViz. Stop with Ctrl-C, then save the map with:
+
+  ./scripts/tb4 save-map ${namespace} maps/lab
+
+MESSAGE
+
+  exec ros2 launch paper_tb4_swarm real_explore_one_tb4.launch.py \
+    namespace:="/${namespace}" \
+    "$@"
+}
+
+cmd_wall_map_real() {
+  source_project
+  setup_fastdds_env
+
+  local namespace="robot1"
+  if [[ $# -gt 0 && "${1}" != *":="* ]]; then
+    namespace="$1"
+    shift
+  fi
+  namespace="${namespace#/}"
+
+  if [[ "${TB4_SKIP_PREFLIGHT:-0}" != "1" ]]; then
+    check_mapping_robot "${namespace}"
+  fi
+
+  cat <<MESSAGE
+Starting conservative WALL-FOLLOWING SLAM for /${namespace}.
+This moves slowly using lidar sectors and stops/turns before close obstacles.
+Stop with Ctrl-C, then save the map with:
+
+  ./scripts/tb4 save-map ${namespace} maps/lab
+
+MESSAGE
+
+  exec ros2 launch paper_tb4_swarm real_wall_map_one_tb4.launch.py \
+    namespace:="/${namespace}" \
+    "$@"
+}
+
+cmd_clear_map_real() {
+  source_project
+  setup_fastdds_env
+
+  local namespace="robot1"
+  if [[ $# -gt 0 && "${1}" != *":="* ]]; then
+    namespace="$1"
+    shift
+  fi
+  namespace="${namespace#/}"
+
+  if [[ "${TB4_SKIP_PREFLIGHT:-0}" != "1" ]]; then
+    check_mapping_robot "${namespace}"
+  fi
+
+  cat <<MESSAGE
+Starting forward-only CLEARANCE SLAM for /${namespace}.
+This scans for the most open lidar heading, rotates toward it, and only drives
+forward. It never commands reverse velocity. Only /${namespace} is required;
+robot2 can stay powered off. Stop with Ctrl-C, then save with:
+
+  ./scripts/tb4 save-map ${namespace} maps/lab
+
+MESSAGE
+
+  exec ros2 launch paper_tb4_swarm real_clearance_map_one_tb4.launch.py \
+    namespace:="/${namespace}" \
+    "$@"
+}
+
+cmd_save_map() {
+  source_project
+  setup_fastdds_env
+
+  local namespace="${1:-robot1}"
+  local map_name="${2:-maps/real_map}"
+  namespace="${namespace#/}"
+  mkdir -p "$(dirname "${map_name}")"
+
+  ros2 run nav2_map_server map_saver_cli -t "/${namespace}/map" -f "${map_name}" \
+    --ros-args \
+    -p map_subscribe_transient_local:=true \
+    -p save_map_timeout:=10.0
+}
+
+cmd_nav2_real() {
+  local map_file=""
+  if [[ $# -gt 0 && "${1}" != *":="* ]]; then
+    map_file="$1"
+    shift
+  else
+    local arg
+    for arg in "$@"; do
+      if [[ "${arg}" == map:=* ]]; then
+        map_file="${arg#map:=}"
+      fi
+    done
+  fi
+
+  if [[ -z "${map_file}" ]]; then
+    cat >&2 <<'USAGE'
+Usage: ./scripts/tb4 nav2-real <map.yaml> [launch_args]
+
+Example:
+  ./scripts/tb4 nav2-real maps/lab.yaml
+USAGE
+    exit 2
+  fi
+
+  if [[ ! -f "${map_file}" ]]; then
+    echo "Map file not found: ${map_file}" >&2
+    exit 2
+  fi
+
+  if [[ "${TB4_SKIP_PREFLIGHT:-0}" != "1" ]]; then
+    source_project
+    setup_fastdds_env
+    if [[ "${TB4_REFRESH_DAEMON:-1}" != "0" ]]; then
+      echo "Refreshing ROS 2 daemon discovery cache..."
+      refresh_ros_daemon
+    fi
+    if [[ -z "${SPIN_TIME_WAS_SET}" ]]; then
+      SPIN_TIME=20
+    fi
+    if [[ -z "${TB4_TOPIC_TIMEOUT_WAS_SET}" ]]; then
+      export TB4_TOPIC_TIMEOUT=20
+    fi
+    cmd_check_real --motion --messages
+  else
+    source_project
+    setup_fastdds_env
+  fi
+
+  exec ros2 launch paper_tb4_swarm real_nav2_two_tb4.launch.py "map:=${map_file}" "$@"
+}
+
+cmd_paper_plan() {
+  sed -n '1,260p' "${PROJECT_DIR}/ros2_ws/src/paper_tb4_swarm/docs/experiment_protocol.md"
+}
+
+cmd_paper_sim_trials() {
+  python3 "${PROJECT_DIR}/scripts/run_paper_sim_trials.py" "$@"
+}
+
+cmd_paper_real_check() {
+  source_project
+  setup_fastdds_env
+  if [[ "${TB4_REFRESH_DAEMON:-1}" != "0" ]]; then
+    refresh_ros_daemon
+  fi
+  if [[ -z "${SPIN_TIME_WAS_SET}" ]]; then
+    SPIN_TIME=20
+  fi
+  if [[ -z "${TB4_TOPIC_TIMEOUT_WAS_SET}" ]]; then
+    export TB4_TOPIC_TIMEOUT=20
+  fi
+
+  local report_dir="${PROJECT_DIR}/metrics/paper_real_deployment"
+  local stamp
+  stamp="$(date +%Y%m%d_%H%M%S)"
+  local report="${report_dir}/check_${stamp}.txt"
+  mkdir -p "${report_dir}"
+
+  set +e
+  {
+    echo "Paper real deployment validation"
+    echo "timestamp=${stamp}"
+    echo "command=./scripts/tb4 check-real --motion --messages"
+    echo
+    cmd_check_real --motion --messages
+  } 2>&1 | tee "${report}"
+  local status=${PIPESTATUS[0]}
+  set -e
+
+  echo
+  echo "Saved real deployment report: ${report#${PROJECT_DIR}/}"
+  return "${status}"
+}
+
+cmd_rviz() {
+  source_project
+  setup_fastdds_env
+
+  local namespace="${1:-robot1}"
+  if [[ $# -gt 0 ]]; then
+    shift
+  fi
+
+  case "${namespace}" in
+    swarm|two|nav2-real)
+      local config="${PROJECT_DIR}/rviz/two_tb4_nav2.rviz"
+      export LIBGL_ALWAYS_SOFTWARE="${LIBGL_ALWAYS_SOFTWARE:-1}"
+      exec rviz2 -d "${config}" "$@" --ros-args \
+        -r /tf:=/robot1/tf \
+        -r /tf_static:=/robot1/tf_static
+      ;;
+    --raw)
+      exec rviz2 "$@"
+      ;;
+    *)
+      namespace="${namespace#/}"
+      exec ros2 launch turtlebot4_viz view_navigation.launch.py namespace:="/${namespace}" "$@"
+      ;;
+  esac
+}
+
+publish_zero_twist() {
+  local topic="$1"
+  timeout 3 ros2 topic pub --once --qos-reliability best_effort "${topic}" \
+    geometry_msgs/msg/Twist "{linear: {x: 0.0}, angular: {z: 0.0}}" >/dev/null
+}
+
+publish_zero_twist_stamped() {
+  local topic="$1"
+  timeout 3 ros2 topic pub --once --qos-reliability best_effort "${topic}" \
+    geometry_msgs/msg/TwistStamped "{twist: {linear: {x: 0.0}, angular: {z: 0.0}}}" >/dev/null
+}
+
+cmd_stop_real() {
+  source_project
+  setup_fastdds_env
+  publish_zero_twist /robot1/cmd_vel_unstamped || true
+  publish_zero_twist /robot2/cmd_vel_unstamped || true
+  publish_zero_twist_stamped /robot1/cmd_vel || true
+  publish_zero_twist_stamped /robot2/cmd_vel || true
+  echo "Published zero velocity commands to robot1 and robot2."
+}
+
+cmd_clean() {
+  local patterns=(
+    "ros2 launch paper_tb4_swarm"
+    "gz sim"
+    "ruby .*gz"
+    "parameter_bridge"
+    "paper_swarm_coordinator"
+    "simple_goal_follower"
+    "rviz_target_bridge"
+    "nav2_goal_dispatcher"
+    "target_publisher"
+    "metrics_logger"
+    "odom_tf_broadcaster"
+    "occupancy_grid_marker"
+    "static_transform_publisher"
+    "rplidar_static_transform"
+    "nav2_map_server/map_server"
+    "nav2_amcl/amcl"
+    "nav2_lifecycle_manager/lifecycle_manager"
+    "nav2_controller/controller_server"
+    "nav2_planner/planner_server"
+    "nav2_behaviors/behavior_server"
+    "nav2_bt_navigator/bt_navigator"
+    "ros2 launch turtlebot4_viz"
+    "view_navigation.launch.py"
+    "rviz2"
+  )
+
+  for pattern in "${patterns[@]}"; do
+    pkill -TERM -f "${pattern}" 2>/dev/null || true
+  done
+  sleep 1
+  for pattern in "${patterns[@]}"; do
+    pkill -KILL -f "${pattern}" 2>/dev/null || true
+  done
+}
+
+cmd_topics() {
+  source_project
+  setup_fastdds_env
+  exec ros2 topic list -t --no-daemon --spin-time "${SPIN_TIME}" "$@"
+}
+
+cmd="${1:-}"
+if [[ -z "${cmd}" || "${cmd}" == "-h" || "${cmd}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+shift || true
+
+case "${cmd}" in
+  build) cmd_build "$@" ;;
+  sim) cmd_sim "$@" ;;
+  sim-rviz) cmd_sim_rviz "$@" ;;
+  sim-official) cmd_sim_official "$@" ;;
+  check-default) cmd_check_default "$@" ;;
+  setup-real) sed -n '1,220p' "${PROJECT_DIR}/REAL_ROBOTS.md" ;;
+  check-real) cmd_check_real "$@" ;;
+  check-map-real) cmd_check_map_real "$@" ;;
+  real) cmd_real "$@" ;;
+  drive-real) cmd_drive_real "$@" ;;
+  drive-real-rviz) cmd_drive_real_rviz "$@" ;;
+  slam-real) cmd_slam_real "$@" ;;
+  manual-map-real) cmd_manual_map_real "$@" ;;
+  teleop-real) cmd_teleop_real "$@" ;;
+  explore-real) cmd_explore_real "$@" ;;
+  clear-map-real) cmd_clear_map_real "$@" ;;
+  wall-map-real) cmd_wall_map_real "$@" ;;
+  save-map) cmd_save_map "$@" ;;
+  nav2-real) cmd_nav2_real "$@" ;;
+  paper-plan) cmd_paper_plan "$@" ;;
+  paper-sim-trials) cmd_paper_sim_trials "$@" ;;
+  paper-real-check) cmd_paper_real_check "$@" ;;
+  rviz) cmd_rviz "$@" ;;
+  stop-real) cmd_stop_real "$@" ;;
+  clean) cmd_clean "$@" ;;
+  topics) cmd_topics "$@" ;;
+  *)
+    echo "Unknown command: ${cmd}" >&2
+    usage >&2
+    exit 2
+    ;;
+esac

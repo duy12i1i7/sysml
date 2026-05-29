@@ -1,0 +1,14 @@
+# LaTeX generated files
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.w18
+
+# Python generated files
+__pycache__/
+*.py[cod]
