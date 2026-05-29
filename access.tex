@@ -394,25 +394,27 @@ A stable simulation campaign was executed with the two TurtleBot4 namespaces and
 {Simulation metrics over 15 repeated target-acquisition trials.}
 
 \subsection{Physical Deployment Check}
-The physical TurtleBot4 run was treated as a deployment validation rather than a navigation-performance experiment. The check verified whether the real robots exposed the canonical ROS 2 graph required by the model before any physical motion was claimed. The logged run confirmed that the odometry streams and command endpoints were discoverable and publishing for both robots, while the lidar scan topics were visible but did not publish \texttt{LaserScan} messages within the 20 s validation window. The result is summarized in Table \ref{tab_real_check}.
+The physical TurtleBot4 run was treated as a deployment validation rather than a navigation-performance experiment. The check verified whether the real robots exposed the canonical ROS 2 graph required by the model before any physical motion was claimed. Two logged checks were retained: a short 8 s message-window check and a stricter 20 s message-window check. Both used FastDDS with \texttt{ROS\_DOMAIN\_ID=0} and no configured FastDDS profile. The evidence files are \texttt{check\_20260528\_173828.txt} and \texttt{check\_20260528\_173913.txt}. Both checks confirmed that the odometry streams and command endpoints were discoverable and publishing for both robots, while the lidar scan topics were visible but did not publish \texttt{LaserScan} messages within the validation window. The detailed deployment result is summarized in Table \ref{tab_real_check}.
 
-\begin{table}[H]
-\caption{Physical TurtleBot4 deployment check}
+\begin{table*}[!t]
+\caption{Detailed physical TurtleBot4 deployment-validation results}
 \label{tab_real_check}
 \centering
-\begin{tabular}{p{0.48\columnwidth}p{0.32\columnwidth}}
+{\scriptsize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{@{}p{0.10\textwidth}p{0.06\textwidth}p{0.20\textwidth}p{0.22\textwidth}p{0.16\textwidth}p{0.22\textwidth}@{}}
 \hline
-\textbf{Check} & \textbf{Logged result} \\
+\textbf{Run} & \textbf{Window} & \textbf{Topic discovery} & \textbf{Message availability} & \textbf{Motion interface} & \textbf{Paper decision} \\
 \hline
-\texttt{/robot1/odom}, \texttt{/robot2/odom} topics & visible \\
-Odometry messages & publishing \\
-\texttt{/robot1/cmd\_vel\_unstamped}, \texttt{/robot2/cmd\_vel\_unstamped} & visible \\
-\texttt{/robot1/scan}, \texttt{/robot2/scan} topics & visible \\
-LaserScan messages within 20 s & not observed \\
-Physical navigation result & not claimed \\
+\textbf{A} \newline \texttt{173828} & 8 s & 4/4 canonical odom/scan topics visible for \texttt{/robot1} and \texttt{/robot2} & odometry messages 2/2 OK; \texttt{LaserScan} messages 0/2 within window & command endpoints 2/2 visible on \texttt{cmd\_vel\_unstamped} & exit code 2; graph incomplete because scan topics were visible but silent \\
+\textbf{B} \newline \texttt{173913} & 20 s & 4/4 canonical odom/scan topics visible for \texttt{/robot1} and \texttt{/robot2} & odometry messages 2/2 OK; \texttt{LaserScan} messages 0/2 within window & command endpoints 2/2 visible on \texttt{cmd\_vel\_unstamped} & exit code 2; scan stream blocker remained under stricter timeout \\
+\hline
+\textbf{Req. impact} & -- & REQ-004 observable interfaces partially satisfied & odometry evidence available; lidar evidence not available & REQ-006 command endpoint identified but not used for performance scoring & physical navigation not claimed; next step is lidar/service remediation \\
 \hline
 \end{tabular}
-\end{table}
+}
+\end{table*}
 
 \imageplaceholder{fig_real_deployment_check}
 {Replace this box with \texttt{figs/real\_deployment\_check.png}. Use either a terminal screenshot of \texttt{./scripts/tb4 paper-real-check} or an \texttt{rqt\_graph} screenshot showing the canonical \texttt{/robot1} and \texttt{/robot2} odometry, command, and scan interfaces. The image should make clear that physical navigation is not claimed in this paper.}
