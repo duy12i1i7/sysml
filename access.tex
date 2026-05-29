@@ -364,27 +364,30 @@ The physical mode does not launch Gazebo and does not command TurtleBot4 motion 
 {RViz map view used to distinguish safe reachable targets from unsafe goal locations in the optional physical Nav2 demonstration.}
 
 \subsection{Simulation Result}
-A stable simulation campaign was executed with the two TurtleBot4 namespaces and the leader/follower target-acquisition mission. Five target locations were repeated three times, for a total of 15 trials. The targets were $(0.9,0.0)$, $(1.5,0.0)$, $(1.2,0.6)$, $(1.2,-0.6)$, and $(1.8,0.2)$ m in the map frame. The aggregate summary is shown in Table \ref{tab_results}. The result validates the executable chain for target publication, odometry ingestion, role assignment, goal publication, robot motion, task completion, and metric logging.
+A stable simulation campaign was executed with the two TurtleBot4 namespaces and the leader/follower target-acquisition mission. Five target locations were repeated three times, for a total of 15 trials. The targets were $(0.9,0.0)$, $(1.5,0.0)$, $(1.2,0.6)$, $(1.2,-0.6)$, and $(1.8,0.2)$ m in the map frame. The reported metrics follow common evaluation practice in multi-robot and mobile-robot navigation studies: success rate and path length for task completion, time and travel distance for efficiency, inter-robot separation for safety, and role/formation evidence for coordination \cite{Schneider2005Metrics,Wen2021MRPB,Skrynnik2025POGEMA}. The detailed result is shown in Table \ref{tab_results}. The result validates the executable chain for target publication, odometry ingestion, role assignment, goal publication, robot motion, task completion, and metric logging.
 
-\begin{table}[H]
-\caption{Repeated stable two-TurtleBot4 simulation results}
+\begin{table*}[!t]
+\caption{Detailed stable two-TurtleBot4 simulation validation results}
 \label{tab_results}
 \centering
-\begin{tabular}{p{0.45\columnwidth}p{0.35\columnwidth}}
+{\scriptsize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{@{}p{0.11\textwidth}p{0.075\textwidth}p{0.045\textwidth}p{0.055\textwidth}p{0.115\textwidth}p{0.18\textwidth}p{0.145\textwidth}p{0.19\textwidth}@{}}
 \hline
-\textbf{Metric} & \textbf{Value} \\
+\textbf{Target case} & \textbf{Target (m)} & \textbf{Trials} & \textbf{Success} & \textbf{Completion time (s)} & \textbf{Path length (m)} & \textbf{Safety / spacing (m)} & \textbf{Coordination evidence} \\
 \hline
-Trials & 15 \\
-Success rate & 15/15 (100\%) \\
-Duration & mean 7.404 s, min 5.502 s, max 9.006 s \\
-Role switches & 0 total \\
-Minimum separation & min 0.765 m, mean 0.949 m \\
-\texttt{/robot1} path & mean 1.238 m \\
-\texttt{/robot2} path & mean 0.858 m \\
-Requirement refs & REQ-001--REQ-006 \\
+\texttt{forward\_near} & (0.90, 0.00) & 3 & 3/3 & $5.503 \pm 0.001$ & R1 0.773; R2 0.477; team 1.250 & min 1.000; mean 1.000 & fixed leader/follower; 0 role switches \\
+\texttt{forward\_mid} & (1.50, 0.00) & 3 & 3/3 & $7.504 \pm 0.001$ & R1 1.334; R2 0.882; team 2.216 & min 1.000; mean 1.000 & fixed leader/follower; 0 role switches \\
+\texttt{upper\_diag} & (1.20, 0.60) & 3 & 3/3 & $7.504 \pm 0.002$ & R1 1.213; R2 0.813; team 2.026 & min 0.765; mean 0.766 & fixed leader/follower; 0 role switches \\
+\texttt{lower\_diag} & (1.20, -0.60) & 3 & 3/3 & $7.503 \pm 0.001$ & R1 1.205; R2 0.896; team 2.100 & min 1.000; mean 1.000 & fixed leader/follower; 0 role switches \\
+\texttt{forward\_far} & (1.80, 0.20) & 3 & 3/3 & $9.005 \pm 0.002$ & R1 1.664; R2 1.222; team 2.886 & min 0.978; mean 0.979 & fixed leader/follower; 0 role switches \\
+\hline
+\textbf{All targets} & 5 cases & 15 & 15/15 (100\%) & mean $7.404 \pm 1.153$; median 7.503; range 5.502--9.006 & R1 $1.238 \pm 0.296$; R2 $0.858 \pm 0.246$; team $2.096 \pm 0.540$; R2/R1 $0.685 \pm 0.050$ & global min 0.765; mean $0.949 \pm 0.095$; no observed contact & 0 total role switches; 15 summary CSV files and 15 timeline CSV files; REQ-001--REQ-006 traced \\
 \hline
 \end{tabular}
-\end{table}
+}
+\end{table*}
 
 \imageplaceholder{fig_sim_trial_metrics}
 {Replace this box with \texttt{figs/sim\_trial\_metrics.png}. Plot the 15 simulation trials from \texttt{metrics/paper\_sim\_trials/aggregate\_20260528\_173405.csv}. Recommended panels: completion time per trial, \texttt{/robot1} and \texttt{/robot2} path length, and minimum separation.}
