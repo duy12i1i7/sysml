@@ -1,0 +1,2621 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <world name="two_tb4_lab">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+
+    <physics name="stable_step" type="ignored">
+      <max_step_size>0.005</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.8 0.85 0.9 1</background>
+      <shadows>false</shadows>
+    </scene>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>5 5</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>5 5</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.78 0.78 0.76 1</ambient>
+            <diffuse>0.78 0.78 0.76 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="lab_map_floor">
+      <static>true</static>
+      <pose>0.450 0.125 0.003 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>2.450 3.100 0.006</size></box></geometry>
+          <material><ambient>0.86 0.88 0.84 1</ambient><diffuse>0.86 0.88 0.84 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="lab_occupied_cells">
+      <static>true</static>
+      <link name="lab_occupied_cells_000">
+        <pose>0.425 -1.400 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_001">
+        <pose>0.375 -1.350 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_002">
+        <pose>0.350 -1.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.350 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.350 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_003">
+        <pose>0.225 -1.250 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_004">
+        <pose>0.500 -1.250 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_005">
+        <pose>0.150 -1.200 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_006">
+        <pose>0.550 -1.175 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_007">
+        <pose>0.050 -1.150 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_008">
+        <pose>-0.025 -1.100 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_009">
+        <pose>0.600 -1.100 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_010">
+        <pose>-0.100 -1.050 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_011">
+        <pose>0.625 -1.050 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_012">
+        <pose>-0.200 -1.000 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_013">
+        <pose>0.650 -1.000 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_014">
+        <pose>-0.275 -0.950 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_015">
+        <pose>0.675 -0.950 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_016">
+        <pose>-0.350 -0.900 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_017">
+        <pose>0.725 -0.875 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_018">
+        <pose>-0.425 -0.850 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_019">
+        <pose>-0.500 -0.800 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_020">
+        <pose>0.775 -0.775 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_021">
+        <pose>-0.575 -0.750 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_022">
+        <pose>-0.650 -0.700 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_023">
+        <pose>0.825 -0.700 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_024">
+        <pose>0.875 -0.650 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_025">
+        <pose>-0.725 -0.625 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_026">
+        <pose>0.900 -0.600 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_027">
+        <pose>-0.700 -0.550 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_028">
+        <pose>0.875 -0.550 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_029">
+        <pose>-0.675 -0.500 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_030">
+        <pose>-0.175 -0.500 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_031">
+        <pose>0.850 -0.500 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.350 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.350 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_032">
+        <pose>-0.225 -0.450 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_033">
+        <pose>0.675 -0.450 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_034">
+        <pose>0.975 -0.450 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_035">
+        <pose>-0.625 -0.425 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_036">
+        <pose>-0.300 -0.400 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_037">
+        <pose>0.650 -0.400 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_038">
+        <pose>1.025 -0.400 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_039">
+        <pose>-0.575 -0.350 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_040">
+        <pose>-0.375 -0.350 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_041">
+        <pose>0.600 -0.350 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_042">
+        <pose>1.050 -0.350 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_043">
+        <pose>-0.475 -0.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_044">
+        <pose>1.075 -0.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_045">
+        <pose>-0.500 -0.250 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_046">
+        <pose>1.125 -0.225 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_047">
+        <pose>-0.475 -0.200 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_048">
+        <pose>-0.450 -0.150 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_049">
+        <pose>1.175 -0.150 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_050">
+        <pose>-0.425 -0.100 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_051">
+        <pose>1.225 -0.075 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_052">
+        <pose>-0.375 -0.025 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_053">
+        <pose>1.275 0.025 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_054">
+        <pose>-0.325 0.050 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_055">
+        <pose>-0.300 0.100 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_056">
+        <pose>1.325 0.100 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_057">
+        <pose>-0.275 0.150 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_058">
+        <pose>1.375 0.175 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_059">
+        <pose>-0.225 0.200 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_060">
+        <pose>-0.200 0.250 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_061">
+        <pose>0.350 0.250 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_062">
+        <pose>1.425 0.250 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_063">
+        <pose>-0.175 0.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_064">
+        <pose>0.325 0.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_065">
+        <pose>1.475 0.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_066">
+        <pose>0.275 0.350 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_067">
+        <pose>-0.125 0.375 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_068">
+        <pose>1.525 0.375 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_069">
+        <pose>0.175 0.400 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_070">
+        <pose>-0.075 0.450 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_071">
+        <pose>0.125 0.450 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_072">
+        <pose>1.575 0.450 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_073">
+        <pose>0.025 0.500 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_074">
+        <pose>1.075 0.500 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_075">
+        <pose>1.600 0.500 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_076">
+        <pose>0.000 0.550 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_077">
+        <pose>1.100 0.550 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_078">
+        <pose>1.625 0.550 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_079">
+        <pose>0.025 0.600 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_080">
+        <pose>1.125 0.600 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_081">
+        <pose>1.600 0.600 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_082">
+        <pose>1.575 0.650 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_083">
+        <pose>0.075 0.675 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_084">
+        <pose>1.175 0.675 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_085">
+        <pose>1.475 0.700 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_086">
+        <pose>0.125 0.750 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_087">
+        <pose>1.350 0.750 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.350 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.350 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_088">
+        <pose>1.325 0.800 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_089">
+        <pose>0.175 0.825 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_090">
+        <pose>0.750 0.850 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_091">
+        <pose>1.300 0.850 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_092">
+        <pose>0.225 0.900 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_093">
+        <pose>0.775 0.900 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_094">
+        <pose>1.325 0.900 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_095">
+        <pose>1.350 0.950 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_096">
+        <pose>0.275 0.975 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_097">
+        <pose>0.825 0.975 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_098">
+        <pose>1.375 1.000 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_099">
+        <pose>0.325 1.050 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_100">
+        <pose>0.875 1.050 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_101">
+        <pose>1.425 1.050 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_102">
+        <pose>0.350 1.100 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_103">
+        <pose>0.900 1.100 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_104">
+        <pose>1.450 1.100 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_105">
+        <pose>0.375 1.150 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_106">
+        <pose>0.925 1.150 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_107">
+        <pose>1.475 1.150 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_108">
+        <pose>0.425 1.200 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_109">
+        <pose>0.975 1.200 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_110">
+        <pose>1.525 1.200 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_111">
+        <pose>0.450 1.250 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_112">
+        <pose>1.000 1.250 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_113">
+        <pose>1.450 1.250 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_114">
+        <pose>0.475 1.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_115">
+        <pose>1.025 1.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_116">
+        <pose>1.400 1.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_117">
+        <pose>0.525 1.350 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_118">
+        <pose>1.050 1.350 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_119">
+        <pose>1.300 1.350 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_120">
+        <pose>0.550 1.400 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_121">
+        <pose>1.200 1.400 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.350 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.350 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_122">
+        <pose>0.575 1.450 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_123">
+        <pose>1.175 1.450 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_124">
+        <pose>0.600 1.500 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_125">
+        <pose>1.075 1.500 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_126">
+        <pose>0.625 1.550 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_127">
+        <pose>0.975 1.550 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_128">
+        <pose>0.675 1.600 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_129">
+        <pose>0.925 1.600 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_occupied_cells_130">
+        <pose>0.800 1.650 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="lab_unknown_cells">
+      <static>true</static>
+      <link name="lab_unknown_cells_000">
+        <pose>-0.200 -1.400 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_001">
+        <pose>1.075 -1.375 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.200 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.200 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_002">
+        <pose>-0.250 -1.350 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_003">
+        <pose>-0.300 -1.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.950 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.950 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_004">
+        <pose>1.100 -1.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_005">
+        <pose>-0.325 -1.250 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.900 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.900 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_006">
+        <pose>1.125 -1.250 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_007">
+        <pose>-0.375 -1.200 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.800 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.800 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_008">
+        <pose>1.150 -1.175 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.050 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.050 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_009">
+        <pose>-0.425 -1.150 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.700 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.700 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_010">
+        <pose>-0.450 -1.100 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.650 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.650 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_011">
+        <pose>1.175 -1.075 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.000 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.000 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_012">
+        <pose>-0.500 -1.050 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.550 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.550 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_013">
+        <pose>-0.550 -1.000 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.450 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.450 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_014">
+        <pose>1.200 -0.975 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.950 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.950 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_015">
+        <pose>-0.575 -0.950 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.400 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.400 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_016">
+        <pose>-0.625 -0.900 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.300 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.300 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_017">
+        <pose>1.225 -0.875 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.900 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.900 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_018">
+        <pose>-0.650 -0.850 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_019">
+        <pose>-0.675 -0.800 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_020">
+        <pose>1.250 -0.775 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.850 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.850 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_021">
+        <pose>-0.725 -0.750 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_022">
+        <pose>-0.750 -0.700 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_023">
+        <pose>1.275 -0.700 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.800 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.800 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_024">
+        <pose>1.300 -0.650 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.750 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.750 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_025">
+        <pose>1.325 -0.575 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.700 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.700 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_026">
+        <pose>-0.750 -0.525 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_027">
+        <pose>1.350 -0.475 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.650 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.650 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_028">
+        <pose>-0.725 -0.425 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_029">
+        <pose>1.375 -0.400 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.600 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.600 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_030">
+        <pose>-0.700 -0.350 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_031">
+        <pose>1.400 -0.325 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.550 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.550 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_032">
+        <pose>-0.675 -0.275 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_033">
+        <pose>1.425 -0.225 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.500 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.500 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_034">
+        <pose>-0.650 -0.175 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_035">
+        <pose>1.450 -0.150 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.450 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.450 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_036">
+        <pose>-0.625 -0.100 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.300 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.300 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_037">
+        <pose>1.475 -0.075 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.400 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.400 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_038">
+        <pose>-0.600 -0.025 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.350 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.350 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_039">
+        <pose>1.500 0.025 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.350 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.350 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_040">
+        <pose>-0.575 0.075 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.400 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.400 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_041">
+        <pose>1.525 0.100 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.300 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.300 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_042">
+        <pose>-0.550 0.150 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.450 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.450 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_043">
+        <pose>1.550 0.175 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_044">
+        <pose>-0.525 0.225 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.500 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.500 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_045">
+        <pose>1.575 0.250 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_046">
+        <pose>-0.500 0.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.550 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.550 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_047">
+        <pose>1.600 0.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_048">
+        <pose>-0.475 0.375 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.600 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.600 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_049">
+        <pose>1.625 0.375 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_050">
+        <pose>-0.450 0.450 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.650 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.650 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_051">
+        <pose>1.650 0.450 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_052">
+        <pose>-0.425 0.525 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.700 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.700 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_053">
+        <pose>-0.400 0.600 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.750 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.750 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_054">
+        <pose>-0.375 0.675 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.800 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.800 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_055">
+        <pose>1.625 0.700 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_056">
+        <pose>-0.350 0.750 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.850 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.850 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_057">
+        <pose>1.600 0.750 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_058">
+        <pose>1.550 0.800 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_059">
+        <pose>-0.325 0.825 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.900 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.900 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_060">
+        <pose>-0.300 0.900 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.950 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.950 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_061">
+        <pose>1.525 0.900 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.300 0.150 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.300 0.150 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_062">
+        <pose>-0.275 0.975 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.000 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.000 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_063">
+        <pose>1.550 1.000 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_064">
+        <pose>-0.250 1.050 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_065">
+        <pose>1.575 1.050 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.200 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_066">
+        <pose>-0.225 1.125 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.100 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.100 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_067">
+        <pose>1.600 1.125 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_068">
+        <pose>-0.200 1.200 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_069">
+        <pose>1.650 1.200 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.050 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_070">
+        <pose>1.625 1.250 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.100 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_071">
+        <pose>-0.175 1.275 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.200 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.200 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_072">
+        <pose>1.600 1.300 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.150 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_073">
+        <pose>-0.150 1.350 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_074">
+        <pose>1.550 1.350 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.250 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_075">
+        <pose>1.525 1.400 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.300 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.300 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_076">
+        <pose>-0.125 1.425 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.300 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.300 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_077">
+        <pose>1.475 1.450 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.400 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.400 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_078">
+        <pose>1.425 1.500 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.500 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.500 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_079">
+        <pose>-0.100 1.525 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.350 0.100 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.350 0.100 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_080">
+        <pose>1.375 1.550 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.600 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.600 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_081">
+        <pose>-0.075 1.600 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.400 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.400 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_082">
+        <pose>1.350 1.600 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.650 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.650 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_083">
+        <pose>-0.050 1.650 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>1.450 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>1.450 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="lab_unknown_cells_084">
+        <pose>1.300 1.650 0.250 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.750 0.050 0.500</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.750 0.050 0.500</size></box></geometry>
+          <material><ambient>0.48 0.50 0.52 1</ambient><diffuse>0.48 0.50 0.52 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="target_marker">
+      <static>true</static>
+      <pose>0.400 -0.600 0.020 0.000 0.000 0.000</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.12</radius>
+              <length>0.04</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>1.0 0.1 0.1 1</ambient>
+            <diffuse>1.0 0.1 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="robot1">
+      <pose>0.000 0.000 0.080 0.000 0.000 0.000</pose>
+      <link name="base_link">
+        <inertial>
+          <mass>2.5</mass>
+          <inertia>
+            <ixx>0.04</ixx>
+            <iyy>0.04</iyy>
+            <izz>0.06</izz>
+          </inertia>
+        </inertial>
+        <collision name="base_collision">
+          <geometry>
+            <box>
+              <size>0.34 0.28 0.12</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="create3_body_visual">
+          <pose>0 0 0.0392 0 0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/irobot_create_description/meshes/body_visual.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="create3_bumper_visual">
+          <pose>0 0 0.0392 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/irobot_create_description/meshes/bumper_visual.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tb4_shell_visual">
+          <pose>0 0 0.0942 1.5708 0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/shell.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_front_left_visual">
+          <pose>0.0306 0.1143 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_front_right_visual">
+          <pose>0.0306 -0.1143 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_rear_left_visual">
+          <pose>-0.0761 0.0907 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_rear_right_visual">
+          <pose>-0.0761 -0.0907 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_sensor_plate_visual">
+          <pose>0 0 0.3468 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_sensor_plate.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="rplidar_visual">
+          <pose>-0.04 0 0.1929 0 0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/rplidar.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="oakd_camera_bracket_visual">
+          <pose>-0.118 0 0.1468 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/camera_bracket.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="oakd_pro_visual">
+          <pose>-0.0596 0 0.2435 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/oakd_pro.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <link name="left_wheel">
+        <pose>0 0.16 -0.035 -1.5707 0 0</pose>
+        <inertial>
+          <mass>0.08</mass>
+          <inertia>
+            <ixx>0.00003</ixx>
+            <iyy>0.00003</iyy>
+            <izz>0.00005</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+      <link name="right_wheel">
+        <pose>0 -0.16 -0.035 -1.5707 0 0</pose>
+        <inertial>
+          <mass>0.08</mass>
+          <inertia>
+            <ixx>0.00003</ixx>
+            <iyy>0.00003</iyy>
+            <izz>0.00005</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+      <joint name="left_wheel_joint" type="revolute">
+        <parent>base_link</parent>
+        <child>left_wheel</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+      <joint name="right_wheel_joint" type="revolute">
+        <parent>base_link</parent>
+        <child>right_wheel</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <left_joint>left_wheel_joint</left_joint>
+        <right_joint>right_wheel_joint</right_joint>
+        <wheel_separation>0.32</wheel_separation>
+        <wheel_radius>0.04</wheel_radius>
+        <topic>/robot1/cmd_vel</topic>
+        <odom_topic>/robot1/odom_raw</odom_topic>
+        <tf_topic>/robot1/tf</tf_topic>
+        <frame_id>robot1/odom</frame_id>
+        <child_frame_id>robot1/base_link</child_frame_id>
+        <odom_publish_frequency>30</odom_publish_frequency>
+      </plugin>
+    </model>
+
+    <model name="robot2">
+      <pose>0.800 0.000 0.080 0.000 0.000 0.000</pose>
+      <link name="base_link">
+        <inertial>
+          <mass>2.5</mass>
+          <inertia>
+            <ixx>0.04</ixx>
+            <iyy>0.04</iyy>
+            <izz>0.06</izz>
+          </inertia>
+        </inertial>
+        <collision name="base_collision">
+          <geometry>
+            <box>
+              <size>0.34 0.28 0.12</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="create3_body_visual">
+          <pose>0 0 0.0392 0 0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/irobot_create_description/meshes/body_visual.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="create3_bumper_visual">
+          <pose>0 0 0.0392 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/irobot_create_description/meshes/bumper_visual.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tb4_shell_visual">
+          <pose>0 0 0.0942 1.5708 0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/shell.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_front_left_visual">
+          <pose>0.0306 0.1143 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_front_right_visual">
+          <pose>0.0306 -0.1143 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_rear_left_visual">
+          <pose>-0.0761 0.0907 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_rear_right_visual">
+          <pose>-0.0761 -0.0907 0.2418 0 1.5708 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_standoff.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="tower_sensor_plate_visual">
+          <pose>0 0 0.3468 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/tower_sensor_plate.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="rplidar_visual">
+          <pose>-0.04 0 0.1929 0 0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/rplidar.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="oakd_camera_bracket_visual">
+          <pose>-0.118 0 0.1468 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/camera_bracket.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="oakd_pro_visual">
+          <pose>-0.0596 0 0.2435 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///opt/ros/jazzy/share/turtlebot4_description/meshes/oakd_pro.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <link name="left_wheel">
+        <pose>0 0.16 -0.035 -1.5707 0 0</pose>
+        <inertial>
+          <mass>0.08</mass>
+          <inertia>
+            <ixx>0.00003</ixx>
+            <iyy>0.00003</iyy>
+            <izz>0.00005</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+      <link name="right_wheel">
+        <pose>0 -0.16 -0.035 -1.5707 0 0</pose>
+        <inertial>
+          <mass>0.08</mass>
+          <inertia>
+            <ixx>0.00003</ixx>
+            <iyy>0.00003</iyy>
+            <izz>0.00005</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+      <joint name="left_wheel_joint" type="revolute">
+        <parent>base_link</parent>
+        <child>left_wheel</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+      <joint name="right_wheel_joint" type="revolute">
+        <parent>base_link</parent>
+        <child>right_wheel</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <left_joint>left_wheel_joint</left_joint>
+        <right_joint>right_wheel_joint</right_joint>
+        <wheel_separation>0.32</wheel_separation>
+        <wheel_radius>0.04</wheel_radius>
+        <topic>/robot2/cmd_vel</topic>
+        <odom_topic>/robot2/odom_raw</odom_topic>
+        <tf_topic>/robot2/tf</tf_topic>
+        <frame_id>robot2/odom</frame_id>
+        <child_frame_id>robot2/base_link</child_frame_id>
+        <odom_publish_frequency>30</odom_publish_frequency>
+      </plugin>
+    </model>
+  </world>
+</sdf>

@@ -6,16 +6,16 @@ paper_swarm_coordinator:
     target_topic: "/target_pose"
     formation_mode: "leader_follower"
     leader_namespace: "robot1"
-    follower_distance_m: 0.8
+    follower_distance_m: 0.55
     follower_lateral_offset_m: 0.0
     target_reached_tolerance_m: 0.18
 
 target_publisher:
   ros__parameters:
     mode: "fixed"
-    target_x: 1.5
-    target_y: 0.0
-    random_bounds: [-1.8, 1.8, -1.2, 1.2]
+    target_x: 1.722
+    target_y: 0.717
+    random_bounds: [1.07, 2.67, 0.27, 2.72]
 
 rviz_target_bridge:
   ros__parameters:
@@ -33,6 +33,13 @@ simple_goal_follower:
     cmd_vel_topic: "cmd_vel"
     cmd_vel_stamped: false
     goal_tolerance_m: 0.12
+    map_clearance_m: 0.22
+    map_unknown_is_obstacle: true
+    map_waypoint_tolerance_m: 0.08
+    map_replan_period_sec: 1.0
+    min_robot_separation_m: 0.35
+    slow_robot_separation_m: 0.55
+    separation_linear_velocity: 0.06
     max_linear_velocity: 0.25
     max_angular_velocity: 1.2
 
@@ -42,9 +49,10 @@ odom_offsetter:
     input_odom_topic: "odom_raw"
     output_odom_topic: "odom"
     frame_id: "map"
-    initial_pose_x: [0.0, 0.0]
-    initial_pose_y: [0.0, 1.0]
+    initial_pose_x: [1.322, 2.122]
+    initial_pose_y: [1.317, 1.317]
     initial_pose_yaw: [0.0, 0.0]
+    max_pose_jump_m: 0.35
 
 metrics_logger:
   ros__parameters:
@@ -52,3 +60,11 @@ metrics_logger:
     odom_topic: "odom"
     pose_topic: ""
     output_dir: "metrics/stable_sim"
+    max_pose_jump_m: 0.35
+
+occupancy_grid_marker:
+  ros__parameters:
+    map_topic: "/map"
+    marker_topic: "/swarm/map_markers"
+    goal_min_clearance_m: 0.22
+    unknown_blocks_goal: true

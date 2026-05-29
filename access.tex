@@ -83,7 +83,7 @@
 
 
 \begin{abstract}
-Multi-robot applications are difficult to validate when system models, simulation assets, and robot software evolve separately. This paper presents a model-based systems engineering (MBSE) workflow that connects SysML artifacts to an executable ROS 2 implementation for a two-TurtleBot4 target-acquisition mission. The workflow defines requirements, behavioral views, software architecture, hardware architecture, and data-flow views, then maps them to ROS 2 nodes, topics, launch files, DDS network settings, and validation metrics. The implemented case study uses exactly two canonical robot identities, \texttt{/robot1} and \texttt{/robot2}, while the physical TurtleBot4 Lite deployment boundary records the required FastDDS, \texttt{ROS\_DOMAIN\_ID}, Simple Discovery, and \texttt{/cmd\_vel\_unstamped} interfaces. A coordinator assigns \texttt{/robot1} as leader, assigns \texttt{/robot2} a dynamic follower pose behind the leader, publishes observable task state and events, and records the result in CSV metrics. Fifteen stable Gazebo simulation trials over five target positions completed successfully, with a mean completion time of 7.404 s, no role switches, and a minimum observed inter-robot separation of 0.765 m. A physical deployment check confirmed the canonical odometry and command interfaces while identifying lidar scan streaming as a remaining deployment issue. The contribution is not a general swarm benchmark, but a traceable sim-to-real workflow whose scope is deliberately aligned with the available two-robot platform.
+Multi-robot applications are difficult to validate when system models, simulation assets, and robot software evolve separately. This paper presents a model-based systems engineering (MBSE) workflow that connects SysML artifacts to an executable ROS 2 implementation for a two-TurtleBot4 target-acquisition mission. The workflow defines requirements, behavioral views, software architecture, hardware architecture, and data-flow views, then maps them to ROS 2 nodes, topics, launch files, DDS network settings, and validation metrics. The implemented case study uses exactly two canonical robot identities, \texttt{/robot1} and \texttt{/robot2}, while the physical TurtleBot4 Lite deployment boundary records the required FastDDS, \texttt{ROS\_DOMAIN\_ID}, Simple Discovery, and \texttt{/cmd\_vel\_unstamped} interfaces. A coordinator assigns \texttt{/robot1} as leader, assigns \texttt{/robot2} a dynamic follower pose behind the leader, publishes observable task state and events, and records the result in CSV metrics. Fifteen stable Gazebo simulation trials over five target positions on the saved lab occupancy map completed successfully, with a mean completion time of 7.603 s, no role switches, and a minimum observed inter-robot separation of 0.321 m. A physical deployment check confirmed the canonical odometry and command interfaces while identifying lidar scan streaming as a remaining deployment issue. The contribution is not a general swarm benchmark, but a traceable sim-to-real workflow whose scope is deliberately aligned with the available two-robot platform.
 \end{abstract}
 
 \begin{keywords}
@@ -355,7 +355,7 @@ REQ-006 & Physical execution shall require explicit DDS configuration and explic
 \end{table}
 
 \subsection{Simulation and Physical Deployment Modes}
-Two simulation modes are provided. The stable mode uses lightweight differential-drive physics with TurtleBot4 visual meshes. This mode is the preferred validation path on the current machine because full Gazebo rendering with the official TurtleBot4 stack previously crashed in the renderer. The official mode launches the installed TurtleBot4 simulator twice and is kept server-only by default.
+Two simulation modes are provided. The stable mode uses lightweight differential-drive physics with TurtleBot4 visual meshes and a Gazebo world generated from the saved lab occupancy map, \texttt{maps/lab.yaml}. This mode is the preferred validation path on the current machine because full Gazebo rendering with the official TurtleBot4 stack previously crashed in the renderer. The official mode launches the installed TurtleBot4 simulator twice and is kept server-only by default.
 
 The physical mode does not launch Gazebo and does not command TurtleBot4 motion by default. It starts the coordinator and metrics nodes against the canonical \texttt{/robot1} and \texttt{/robot2} interfaces. The lab baseline for each TurtleBot4 Lite is FastDDS with \texttt{ROS\_DOMAIN\_ID=0}, Simple Discovery, and no user namespace; in that single-robot form, the robot exposes root topics such as \texttt{/odom}, \texttt{/scan}, \texttt{/oakd/rgb/preview/image\_raw}, and \texttt{/cmd\_vel\_unstamped}. Two physical robots cannot both remain unnamespaced in the same ROS graph without topic collisions, so the deployment must either configure unique namespaces or provide an explicit bridge/remap layer before running the two-robot coordinator. Direct velocity following can be enabled only by setting an explicit launch argument during controlled lab testing, and the physical command topic is \texttt{/robot*/cmd\_vel\_unstamped}. An optional Nav2-based real-robot demonstration can be launched on a saved map, but target selection is limited to safe reachable cells in the map; this optional mode is not used as the quantitative result in this paper. This separation is intentional: the paper validates the model-to-code chain in simulation while preserving a conservative path for physical experiments.
 
@@ -364,7 +364,7 @@ The physical mode does not launch Gazebo and does not command TurtleBot4 motion 
 {RViz map view used to distinguish safe reachable targets from unsafe goal locations in the optional physical Nav2 demonstration.}
 
 \subsection{Simulation Result}
-A stable simulation campaign was executed with the two TurtleBot4 namespaces and the leader/follower target-acquisition mission. Five target locations were repeated three times, for a total of 15 trials. The targets were $(0.9,0.0)$, $(1.5,0.0)$, $(1.2,0.6)$, $(1.2,-0.6)$, and $(1.8,0.2)$ m in the map frame. The reported metrics follow common evaluation practice in multi-robot and mobile-robot navigation studies: success rate and path length for task completion, time and travel distance for efficiency, inter-robot separation for safety, and role/formation evidence for coordination \cite{Schneider2005Metrics,Wen2021MRPB,Skrynnik2025POGEMA}. The target-case identifiers \texttt{sim\_t01}--\texttt{sim\_t05} denote the five target coordinates listed in the Target column; the physical table uses the corresponding \texttt{real\_t01}--\texttt{real\_t05} identifiers for later real-robot runs. In the path-length column, R1 denotes the distance traveled by \texttt{/robot1}, R2 denotes the distance traveled by \texttt{/robot2}, and team denotes the sum of both robot path lengths. The detailed result is shown in Table \ref{tab_results}. The result validates the executable chain for target publication, odometry ingestion, role assignment, goal publication, robot motion, task completion, and metric logging.
+A stable simulation campaign was executed with the two TurtleBot4 namespaces and the leader/follower target-acquisition mission on the saved lab map. Five safe target locations were repeated three times, for a total of 15 trials. The targets were $(1.422,0.717)$, $(1.722,0.717)$, $(1.572,0.917)$, $(1.522,1.117)$, and $(1.722,1.317)$ m in the map frame. The reported metrics follow common evaluation practice in multi-robot and mobile-robot navigation studies: success rate and path length for task completion, time and travel distance for efficiency, inter-robot separation for safety, and role/formation evidence for coordination \cite{Schneider2005Metrics,Wen2021MRPB,Skrynnik2025POGEMA}. The target-case identifiers \texttt{sim\_t01}--\texttt{sim\_t05} denote the five target coordinates listed in the Target column; the physical table uses the corresponding \texttt{real\_t01}--\texttt{real\_t05} identifiers for later real-robot runs on the same map. In the path-length column, R1 denotes the distance traveled by \texttt{/robot1}, R2 denotes the distance traveled by \texttt{/robot2}, and team denotes the sum of both robot path lengths. The detailed result is shown in Table \ref{tab_results}. The result validates the executable chain for target publication, odometry ingestion, role assignment, goal publication, robot motion, task completion, and metric logging.
 
 \begin{table*}[!t]
 \caption{Detailed stable two-TurtleBot4 simulation validation results}
@@ -377,21 +377,23 @@ A stable simulation campaign was executed with the two TurtleBot4 namespaces and
 \hline
 \textbf{Target case} & \textbf{Target (m)} & \textbf{Trials} & \textbf{Success} & \textbf{Completion time (s)} & \textbf{Path length (m)} & \textbf{Safety / spacing (m)} \\
 \hline
-\texttt{sim\_t01} & (0.90, 0.00) & 3 & 3/3 & $5.503 \pm 0.001$ & R1 0.773; R2 0.477; team 1.250 & min 1.000; mean 1.000 \\
-\texttt{sim\_t02} & (1.50, 0.00) & 3 & 3/3 & $7.504 \pm 0.001$ & R1 1.334; R2 0.882; team 2.216 & min 1.000; mean 1.000 \\
-\texttt{sim\_t03} & (1.20, 0.60) & 3 & 3/3 & $7.504 \pm 0.002$ & R1 1.213; R2 0.813; team 2.026 & min 0.765; mean 0.766 \\
-\texttt{sim\_t04} & (1.20, -0.60) & 3 & 3/3 & $7.503 \pm 0.001$ & R1 1.205; R2 0.896; team 2.100 & min 1.000; mean 1.000 \\
-\texttt{sim\_t05} & (1.80, 0.20) & 3 & 3/3 & $9.005 \pm 0.002$ & R1 1.664; R2 1.222; team 2.886 & min 0.978; mean 0.979 \\
+\texttt{sim\_t01} & (1.422, 0.717) & 3 & 3/3 & $17.337 \pm 19.203$ & R1 0.473; R2 0.470; team 0.944 & min 0.321; mean 0.524 \\
+\texttt{sim\_t02} & (1.722, 0.717) & 3 & 3/3 & $7.172 \pm 1.607$ & R1 0.586; R2 0.195; team 0.781 & min 0.347; mean 0.515 \\
+\texttt{sim\_t03} & (1.572, 0.917) & 3 & 3/3 & $5.003 \pm 0.002$ & R1 0.353; R2 0.000; team 0.353 & min 0.669; mean 0.669 \\
+\texttt{sim\_t04} & (1.522, 1.117) & 3 & 3/3 & $4.503 \pm 0.503$ & R1 0.191; R2 0.000; team 0.191 & min 0.659; mean 0.669 \\
+\texttt{sim\_t05} & (1.722, 1.317) & 3 & 3/3 & $4.002 \pm 0.006$ & R1 0.278; R2 0.000; team 0.278 & min 0.521; mean 0.522 \\
 \hline
-\textbf{All targets} & 5 cases & 15 & 15/15 (100\%) & mean $7.404 \pm 1.153$; median 7.503; range 5.502--9.006 & R1 $1.238 \pm 0.296$; R2 $0.858 \pm 0.246$; team $2.096 \pm 0.540$; R2/R1 $0.685 \pm 0.050$ & global min 0.765; mean $0.949 \pm 0.095$; no observed contact \\
+\textbf{All targets} & 5 cases & 15 & 15/15 (100\%) & mean $7.603 \pm 8.928$; median 5.004; range 3.997--39.509 & R1 $0.376 \pm 0.146$; R2 $0.133 \pm 0.231$; team $0.509 \pm 0.337$; R2/R1 $0.261 \pm 0.463$ & global min 0.321; mean $0.580 \pm 0.115$; no observed contact \\
 \hline
 \end{tabular}
 }
 \end{table*}
 
 \imageplaceholder{fig_sim_trial_metrics}
-{Replace this box with \texttt{figs/sim\_trial\_metrics.png}. Plot the 15 simulation trials from \texttt{metrics/paper\_sim\_trials/aggregate\_20260528\_173405.csv}. Recommended panels: completion time per trial, \texttt{/robot1} and \texttt{/robot2} path length, and minimum separation.}
+{Replace this box with \texttt{figs/sim\_trial\_metrics.png}. Plot the 15 simulation trials from the aggregate CSV in \texttt{metrics/paper\_sim\_lab\_map\_trials/} with timestamp \texttt{20260529\_170846}. Recommended panels: completion time per trial, \texttt{/robot1} and \texttt{/robot2} path length, and minimum separation.}
 {Simulation metrics over 15 repeated target-acquisition trials.}
+
+Some close-range targets produce zero measured travel for \texttt{/robot2} because the follower pose is already within the accepted formation region when the leader reaches the target. This is expected for the compact lab map and is reflected directly in the CSV metrics rather than post-processed away.
 
 \subsection{Physical Deployment Check}
 The physical TurtleBot4 run was treated as a deployment-readiness check before collecting navigation-performance data. The logged readiness checks used FastDDS with \texttt{ROS\_DOMAIN\_ID=0} and confirmed that the odometry streams and command endpoints were discoverable and publishing for both robots, while the lidar scan topics were visible but did not publish \texttt{LaserScan} messages within the validation window. Because this readiness state is not yet a physical navigation result, Table \ref{tab_real_check} is intentionally formatted as the real-robot result template that will be filled after the same metric set is collected on the physical map.
@@ -407,11 +409,11 @@ The physical TurtleBot4 run was treated as a deployment-readiness check before c
 \hline
 \textbf{Target case} & \textbf{Target (m)} & \textbf{Trials} & \textbf{Success} & \textbf{Completion time (s)} & \textbf{Path length (m)} & \textbf{Safety / spacing (m)} \\
 \hline
-\texttt{real\_t01} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
-\texttt{real\_t02} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
-\texttt{real\_t03} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
-\texttt{real\_t04} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
-\texttt{real\_t05} & TBD & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
+\texttt{real\_t01} & (1.422, 0.717) & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
+\texttt{real\_t02} & (1.722, 0.717) & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
+\texttt{real\_t03} & (1.572, 0.917) & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
+\texttt{real\_t04} & (1.522, 1.117) & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
+\texttt{real\_t05} & (1.722, 1.317) & TBD & TBD & TBD & R1 TBD; R2 TBD; team TBD & min TBD; mean TBD \\
 \hline
 \textbf{All targets} & TBD & TBD & TBD & mean TBD; median TBD; range TBD & R1 TBD; R2 TBD; team TBD; R2/R1 TBD & global min TBD; mean TBD; contact events TBD \\
 \hline

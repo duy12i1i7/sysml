@@ -44,11 +44,13 @@ class MetricsLogger(Node):
         self.declare_parameter("task_state_topic", "/swarm/task_state")
         self.declare_parameter("events_topic", "/swarm/events")
         self.declare_parameter("output_dir", "metrics")
+        self.declare_parameter("max_pose_jump_m", 0.35)
 
         self.robot_namespaces = self._namespaces(
             self.get_parameter("robot_namespaces").value
         )
         self.output_dir = os.path.abspath(str(self.get_parameter("output_dir").value))
+        self.max_pose_jump_m = float(self.get_parameter("max_pose_jump_m").value)
         os.makedirs(self.output_dir, exist_ok=True)
         stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.summary_path = os.path.join(self.output_dir, f"summary_{stamp}.csv")
@@ -146,7 +148,14 @@ class MetricsLogger(Node):
         robot = self.metrics.robots[namespace]
         xy = (x, y)
         if robot.last_xy is not None:
-            robot.path_m += math.hypot(xy[0] - robot.last_xy[0], xy[1] - robot.last_xy[1])
+            jump = math.hypot(xy[0] - robot.last_xy[0], xy[1] - robot.last_xy[1])
+            if jump > self.max_pose_jump_m:
+                self.get_logger().warn(
+                    f"Dropping implausible {namespace} metrics pose jump: {jump:.3f} m",
+                    throttle_duration_sec=2.0,
+                )
+                return
+            robot.path_m += jump
         robot.last_xy = xy
         self._update_separation()
         self._write_timeline("pose", namespace, "")

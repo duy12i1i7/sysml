@@ -7,6 +7,9 @@
 /metrics/*
 !/metrics/paper_sim_trials/
 !/metrics/paper_sim_trials/**
+!/metrics/paper_sim_lab_map_trials/
+/metrics/paper_sim_lab_map_trials/*
+!/metrics/paper_sim_lab_map_trials/aggregate_*.csv
 !/metrics/paper_real_deployment/
 !/metrics/paper_real_deployment/**
 

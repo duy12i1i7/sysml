@@ -135,7 +135,7 @@ cmd_sim() {
 
   if [[ "${1:-}" == "--gui" ]]; then
     shift
-    local world="${PROJECT_DIR}/install/paper_tb4_swarm/share/paper_tb4_swarm/worlds/two_tb4_stable.sdf"
+    local world="${PROJECT_DIR}/install/paper_tb4_swarm/share/paper_tb4_swarm/worlds/two_tb4_lab.sdf"
     exec ros2 launch paper_tb4_swarm stable_two_tb4.launch.py \
       gz_args:="${world} -r -v 1" \
       "$@"
@@ -795,6 +795,7 @@ cmd_clean() {
     "nav2_goal_dispatcher"
     "target_publisher"
     "metrics_logger"
+    "odom_offsetter"
     "odom_tf_broadcaster"
     "occupancy_grid_marker"
     "static_transform_publisher"

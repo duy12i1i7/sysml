@@ -15,8 +15,8 @@ def _bridge(namespace: str) -> Node:
         name=f"{namespace}_bridge",
         output="screen",
         arguments=[
-            f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
-            f"/{namespace}/odom_raw@nav_msgs/msg/Odometry@gz.msgs.Odometry",
+            f"/{namespace}/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
+            f"/{namespace}/odom_raw@nav_msgs/msg/Odometry[gz.msgs.Odometry",
         ],
     )
 
@@ -25,19 +25,24 @@ def generate_launch_description():
     use_gazebo = LaunchConfiguration("use_gazebo")
     gz_args = LaunchConfiguration("gz_args")
     config_file = LaunchConfiguration("config_file")
+    map_file = LaunchConfiguration("map_file")
     output_dir = LaunchConfiguration("output_dir")
     use_target_publisher = LaunchConfiguration("use_target_publisher")
     use_rviz_target = LaunchConfiguration("use_rviz_target")
     use_metrics = LaunchConfiguration("use_metrics")
+    use_map_markers = LaunchConfiguration("use_map_markers")
     target_mode = LaunchConfiguration("target_mode")
     target_x = LaunchConfiguration("target_x")
     target_y = LaunchConfiguration("target_y")
 
     default_world = PathJoinSubstitution(
-        [FindPackageShare("paper_tb4_swarm"), "worlds", "two_tb4_stable.sdf"]
+        [FindPackageShare("paper_tb4_swarm"), "worlds", "two_tb4_lab.sdf"]
     )
     default_config = PathJoinSubstitution(
         [FindPackageShare("paper_tb4_swarm"), "config", "stable_sim.yaml"]
+    )
+    default_map = PathJoinSubstitution(
+        [FindPackageShare("paper_tb4_swarm"), "maps", "lab.yaml"]
     )
     gz_launch = PathJoinSubstitution(
         [FindPackageShare("ros_gz_sim"), "launch", "gz_sim.launch.py"]
@@ -47,13 +52,15 @@ def generate_launch_description():
         [
             DeclareLaunchArgument("use_gazebo", default_value="true"),
             DeclareLaunchArgument("config_file", default_value=default_config),
+            DeclareLaunchArgument("map_file", default_value=default_map),
             DeclareLaunchArgument("output_dir", default_value="metrics/stable_sim"),
             DeclareLaunchArgument("use_target_publisher", default_value="true"),
             DeclareLaunchArgument("use_rviz_target", default_value="false"),
             DeclareLaunchArgument("use_metrics", default_value="true"),
+            DeclareLaunchArgument("use_map_markers", default_value="true"),
             DeclareLaunchArgument("target_mode", default_value="fixed"),
-            DeclareLaunchArgument("target_x", default_value="1.5"),
-            DeclareLaunchArgument("target_y", default_value="0.0"),
+            DeclareLaunchArgument("target_x", default_value="1.722"),
+            DeclareLaunchArgument("target_y", default_value="0.717"),
             DeclareLaunchArgument("gz_args", default_value=[default_world, " -r -s -v 1"]),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(gz_launch),
@@ -101,6 +108,26 @@ def generate_launch_description():
             ),
             Node(
                 package="paper_tb4_swarm",
+                executable="static_map_publisher",
+                name="static_map_publisher",
+                output="screen",
+                parameters=[
+                    {
+                        "map_yaml": map_file,
+                        "map_topic": "/map",
+                    }
+                ],
+            ),
+            Node(
+                package="paper_tb4_swarm",
+                executable="occupancy_grid_marker",
+                name="occupancy_grid_marker",
+                output="screen",
+                parameters=[config_file],
+                condition=IfCondition(use_map_markers),
+            ),
+            Node(
+                package="paper_tb4_swarm",
                 executable="rviz_target_bridge",
                 name="rviz_target_bridge",
                 output="screen",
@@ -112,7 +139,7 @@ def generate_launch_description():
                 executable="simple_goal_follower",
                 name="simple_goal_follower",
                 output="screen",
-                parameters=[config_file],
+                parameters=[config_file, {"map_yaml": map_file}],
             ),
             Node(
                 package="paper_tb4_swarm",

@@ -15,11 +15,11 @@ from pathlib import Path
 
 
 DEFAULT_TARGETS = [
-    ("forward_near", 0.9, 0.0),
-    ("forward_mid", 1.5, 0.0),
-    ("upper_diag", 1.2, 0.6),
-    ("lower_diag", 1.2, -0.6),
-    ("forward_far", 1.8, 0.2),
+    ("lab_lower_left", 1.422, 0.717),
+    ("lab_lower", 1.722, 0.717),
+    ("lab_lower_mid", 1.572, 0.917),
+    ("lab_mid_left", 1.522, 1.117),
+    ("lab_mid", 1.722, 1.317),
 ]
 
 

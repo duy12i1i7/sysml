@@ -1,4 +1,5 @@
 import math
+from copy import deepcopy
 
 import rclpy
 from nav_msgs.msg import Odometry
@@ -18,6 +19,7 @@ class OdomOffsetter(Node):
         self.declare_parameter("initial_pose_x", [0.0, 0.0])
         self.declare_parameter("initial_pose_y", [0.0, 1.0])
         self.declare_parameter("initial_pose_yaw", [0.0, 0.0])
+        self.declare_parameter("max_pose_jump_m", 0.35)
 
         self.robot_namespaces = self._namespaces(
             self.get_parameter("robot_namespaces").value
@@ -30,7 +32,9 @@ class OdomOffsetter(Node):
         self.initial_yaw = [
             float(v) for v in self.get_parameter("initial_pose_yaw").value
         ]
+        self.max_pose_jump_m = float(self.get_parameter("max_pose_jump_m").value)
         self.odom_publishers = {}
+        self.last_xy = {}
         for namespace in self.robot_namespaces:
             self.odom_publishers[namespace] = self.create_publisher(
                 Odometry, self._topic(namespace, self.output_odom_topic), 10
@@ -60,13 +64,28 @@ class OdomOffsetter(Node):
         local_x = msg.pose.pose.position.x
         local_y = msg.pose.pose.position.y
         out = Odometry()
-        out.header = msg.header
+        out.header = deepcopy(msg.header)
         out.header.frame_id = self.frame_id
         out.child_frame_id = f"{namespace}/base_link"
-        out.pose = msg.pose
-        out.twist = msg.twist
-        out.pose.pose.position.x = self.initial_x[index] + cos_yaw * local_x - sin_yaw * local_y
-        out.pose.pose.position.y = self.initial_y[index] + sin_yaw * local_x + cos_yaw * local_y
+        out.pose = deepcopy(msg.pose)
+        out.twist = deepcopy(msg.twist)
+        out.pose.pose.position.x = (
+            self.initial_x[index] + cos_yaw * local_x - sin_yaw * local_y
+        )
+        out.pose.pose.position.y = (
+            self.initial_y[index] + sin_yaw * local_x + cos_yaw * local_y
+        )
+        xy = (out.pose.pose.position.x, out.pose.pose.position.y)
+        previous_xy = self.last_xy.get(namespace)
+        if previous_xy is not None:
+            jump = math.hypot(xy[0] - previous_xy[0], xy[1] - previous_xy[1])
+            if jump > self.max_pose_jump_m:
+                self.get_logger().warn(
+                    f"Dropping implausible {namespace} odom jump: {jump:.3f} m",
+                    throttle_duration_sec=2.0,
+                )
+                return
+        self.last_xy[namespace] = xy
         self.odom_publishers[namespace].publish(out)
 
 
